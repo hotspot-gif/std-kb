@@ -29,21 +29,25 @@ Full RTL support for Urdu with proper border, alignment, and layout mirroring.
 
 ### 🧮 Interactive Incentive Calculators
 
-Two separate calculators with real-time computation:
+Two separate calculators with **dual plan-tier inputs** and real-time computation:
 
 **New Activations Calculator**
-- Plan selection from all eligible plans (€6.99 – €14.99)
-- Activation count with automatic tier detection (1–5, 6–14, 15–34, 35+)
+- **Plans ≤ €6.99** — quantity input field
+- **Plans > €6.99** — quantity input field
+- Tier auto-calculated from combined total (1–5, 6–14, 15–34, 35+)
+- Each tier applies its own rate independently
+- Live tier indicator updates as you type
 - Auto Recharge cashback toggle
-- Instant earnings breakdown
+- Instant breakdown by plan type
 
 **MNP (Port-In) Calculator**
-- Plan type selection (≤€6.99 or >€6.99)
-- Port-in count with automatic tier detection
+- **MNP Plans ≤ €6.99** — quantity input field
+- **MNP Plans > €6.99** — quantity input field
+- Tier auto-calculated from combined MNP total
 - Source operator selection for GARA Extra Boost (+€40 premium / +€20 others)
+- GARA eligibility warning (minimum 15 total MNP)
 - Auto Recharge cashback toggle
-- GARA eligibility warning (minimum 15 MNP)
-- Detailed incentive breakdown
+- Detailed breakdown: MNP ≤€6.99 + MNP >€6.99 + GARA + Cashback
 
 ### 📊 Programme Sections
 
