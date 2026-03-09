@@ -173,13 +173,25 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .tier-indicator{padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .tier-indicator .tier-badge{background:var(--green-dark);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;padding:4px 12px;border-radius:20px;}
 .tier-indicator .tier-sep{color:rgba(255,255,255,.25);}
+.gara-unlocked-badge{background:var(--green);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;padding:5px 14px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;display:none;animation:fadeUp .3s forwards;}
+.gara-unlocked-badge.visible{display:inline-flex;align-items:center;gap:5px;}
 .plan-type-box{padding:10px 14px;border-radius:6px;margin-bottom:4px;font-size:12px;color:rgba(255,255,255,.55);line-height:1.5;}
 .plan-type-box.lte{background:rgba(8,220,125,.06);border:1px solid rgba(8,220,125,.15);}
 .plan-type-box.gt{background:rgba(36,91,193,.06);border:1px solid rgba(36,91,193,.15);}
 .plan-type-box strong{color:rgba(255,255,255,.8);font-size:13px;}
 .warning-box{padding:10px 14px;background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.35);border-radius:6px;font-size:12px;color:#fca5a5;line-height:1.5;display:none;margin-bottom:14px;}
+.warning-box.visible{display:block;}
+.success-box{padding:8px 12px;background:rgba(8,220,125,.1);border:1px solid rgba(8,220,125,.3);border-radius:5px;font-size:11px;color:#6ee7b7;line-height:1.5;display:none;margin-top:10px;}
+.success-box.visible{display:block;}
+.error-box{padding:8px 12px;background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.35);border-radius:5px;font-size:11px;color:#fca5a5;line-height:1.5;display:none;margin-top:10px;}
+.error-box.visible{display:block;}
 .info-box{padding:10px 14px;background:rgba(255,213,79,.07);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;font-size:12px;color:rgba(255,255,255,.6);margin-bottom:14px;line-height:1.6;}
 .info-box strong{color:var(--gold);}
+.recharge-estimate-note{padding:10px 14px;background:rgba(255,213,79,.08);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;font-size:11px;color:rgba(255,255,255,.55);line-height:1.6;margin-top:12px;display:none;}
+.recharge-estimate-note.visible{display:block;}
+.recharge-estimate-note strong{color:var(--gold);}
+.gara-section-calc{margin-top:16px;padding:18px;background:rgba(8,220,125,.06);border:2px solid rgba(8,220,125,.2);border-radius:8px;display:none;}
+.gara-section-calc.visible{display:block;animation:fadeUp .3s forwards;}
 .terms-list{display:flex;flex-direction:column;gap:12px;}
 .term-item{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:rgba(255,255,255,.04);border-radius:8px;border-left:3px solid transparent;}
 .term-item.t-green{border-left-color:var(--green);}
@@ -219,8 +231,8 @@ body.rtl .term-item.t-gold{border-right-color:var(--gold);}
 body.rtl .term-item.t-red{border-right-color:var(--red);}
 body.rtl .term-item.t-navy{border-right-color:rgba(255,255,255,.3);}
 body.rtl .term-item.t-cyan{border-right-color:var(--cyan);}
-body.rtl .note-box{border-left:1px solid rgba(255,255,255,.1);border-right:3px solid var(--blue);}
-body.rtl .info-box{border-left:none;border-right:3px solid var(--gold);}
+body.rtl .note-box,body.rtl .info-box,body.rtl .recharge-estimate-note{border-left:1px solid rgba(255,255,255,.1);border-right:3px solid var(--blue);}
+body.rtl .info-box,body.rtl .recharge-estimate-note{border-right:3px solid var(--gold);}
 body.rtl .disclaimer{border-left:1px solid rgba(255,255,255,.08);border-right:3px solid rgba(255,255,255,.25);}
 body.rtl .mnp-table th:first-child,body.rtl .reduced-table th:first-child,body.rtl .plan-mini-table th:first-child{text-align:right;}
 body.rtl .mnp-table td:first-child,body.rtl .reduced-table td:first-child{text-align:right;}
@@ -519,6 +531,12 @@ body.rtl .calc-field select{background-position:left 14px center;padding-left:36
             </div>
           </div>
         </div>
+
+        <!-- AUTO RECHARGE ESTIMATE NOTE - NEW ACTIVATIONS -->
+        <div class="recharge-estimate-note" id="recharge-note-new">
+          <strong>⚠</strong> <span data-i18n="auto_recharge_note">Auto Recharge amounts shown are estimates only. Actual cashback values may vary as real plan values can differ.</span>
+        </div>
+
         <button class="calc-btn" id="btn-calc-new" data-i18n="calc_btn">Calculate Earnings</button>
         <div class="results-box" id="res-new">
           <p class="results-title" data-i18n="res_title">EARNINGS BREAKDOWN</p>
@@ -562,17 +580,22 @@ body.rtl .calc-field select{background-position:left 14px center;padding-left:36
           </div>
         </div>
 
+        <!-- TIER INDICATOR WITH GARA UNLOCKED BADGE -->
         <div class="tier-indicator" id="m-tier-box">
           <span data-i18n="total_port_ins">Total Port-Ins:</span>
           <span class="tier-badge" id="m-total-display">15</span>
           <span class="tier-sep">→</span>
           <span data-i18n="tier_label">Tier:</span>
           <span class="tier-badge" id="m-tier-display">15–34</span>
+          <span class="tier-sep">→</span>
+          <span class="gara-unlocked-badge" id="gara-unlocked-badge">🔓 <span data-i18n="gara_unlocked">GARA UNLOCKED</span></span>
         </div>
 
-        <!-- GARA Operator Breakdown -->
-        <div style="margin-top:16px;padding:16px 18px;background:rgba(8,220,125,.06);border:1px solid rgba(8,220,125,.15);border-radius:8px;">
-          <p style="margin:0 0 14px 0;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green);" data-i18n="gara_op_title">GARA · Source Operator Breakdown</p>
+        <!-- GARA OPERATOR SECTION - HIDDEN WHEN < 15 -->
+        <div class="gara-section-calc" id="gara-calc-section">
+          <p style="margin:0 0 6px 0;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:1px;">🔓 <span data-i18n="gara_unlocked">GARA UNLOCKED</span></p>
+          <p style="margin:0 0 14px 0;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);" data-i18n="gara_op_title">GARA · Source Operator Breakdown</p>
+          <p style="margin:0 0 14px 0;font-size:12px;color:rgba(255,255,255,.5);line-height:1.5;" data-i18n="gara_op_instruction">Distribute your total MNP activations between Premium and Other operators. The sum must equal your total MNP count.</p>
           <div class="calc-row" style="margin-bottom:0;">
             <div class="calc-field">
               <label data-i18n="lbl_gara_premium">Premium Operators (+€40/MNP)</label>
@@ -589,7 +612,9 @@ body.rtl .calc-field select{background-position:left 14px center;padding-left:36
               <input type="number" id="m-gara-other" value="0" min="0" max="9999" placeholder="0">
             </div>
           </div>
-          <div id="gara-qty-hint" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.35);border-radius:5px;font-size:11px;color:#fca5a5;line-height:1.5;" data-i18n="gara_qty_mismatch">⚠ GARA quantities exceed total MNP count. Please check your inputs.</div>
+          <!-- GARA qty match/mismatch messages -->
+          <div class="success-box" id="gara-match-msg">✓ <span data-i18n="gara_qty_match">Operator count matches total MNP activations.</span></div>
+          <div class="error-box" id="gara-error-msg"></div>
         </div>
 
         <div class="calc-row" style="margin-top:16px;grid-template-columns:1fr;">
@@ -601,7 +626,11 @@ body.rtl .calc-field select{background-position:left 14px center;padding-left:36
           </div>
         </div>
 
-        <div class="warning-box" id="gara-warning" data-i18n="gara_warning">⚠ GARA bonus requires a minimum of 15 MNP activations per month. GARA set to €0.</div>
+        <!-- AUTO RECHARGE ESTIMATE NOTE - MNP -->
+        <div class="recharge-estimate-note" id="recharge-note-mnp">
+          <strong>⚠</strong> <span data-i18n="auto_recharge_note">Auto Recharge amounts shown are estimates only. Actual cashback values may vary as real plan values can differ.</span>
+        </div>
+
         <div class="info-box" data-i18n="mnp_60day_note">⏱ MNP incentives are credited after <strong>60 days</strong>, subject to continuous use & renewal (minimum 6 months).</div>
         <button class="calc-btn" id="btn-calc-mnp" data-i18n="calc_btn">Calculate Earnings</button>
         <div class="results-box" id="res-mnp">
@@ -632,10 +661,10 @@ body.rtl .calc-field select{background-position:left 14px center;padding-left:36
           <div class="term-item t-blue"><div class="term-num">2</div><p class="term-text" data-i18n="term2">Min plan for port-in: <strong>€5.99</strong> | New activations: <strong>€6.99</strong>. MNP and new activations counted <strong>separately</strong>.</p></div>
           <div class="term-item t-green"><div class="term-num">3</div><p class="term-text" data-i18n="term3">SIM must complete <strong>FCA</strong>. Activations must be <strong>correct and compliant</strong>.</p></div>
           <div class="term-item t-gold"><div class="term-num">4</div><p class="term-text" data-i18n="term4">Port-in incentives credited after <strong>60 days</strong> subject to administrative verification.</p></div>
-          <div class="term-item t-red"><div class="term-num">5</div><p class="term-text" data-i18n="term5">≥10 activations with &gt;5% without use: <strong>deduction</strong>. &gt;5% port-out within 30 days: <strong>deduction</strong>. <strong>€10</strong> penalty per abuse + incentive recovery.</p></div>
+          <div class="term-item t-red"><div class="term-num">5</div><p class="term-text" data-i18n="term5">≥10 activations with >5% without use: <strong>deduction</strong>. >5% port-out within 30 days: <strong>deduction</strong>. <strong>€10</strong> penalty per abuse + incentive recovery.</p></div>
           <div class="term-item t-gold"><div class="term-num">6</div><p class="term-text" data-i18n="term6"><strong>+€5</strong> for NON-HP SIM via POS (max €100). POS inactive 90 days: balance suspended.</p></div>
-          <div class="term-item t-cyan"><div class="term-num">7</div><p class="term-text" data-i18n="term7"><strong>Port-out deductions:</strong> Port-out without FCA or without plan/use. Port-out within 7 days (except plans &gt;€9.99). Port-in + port-out within 60 days = false. Pre-loaded SIMs included in calculations.</p></div>
-          <div class="term-item t-navy"><div class="term-num">8</div><p class="term-text" data-i18n="term8">Malus up to <strong>50%</strong> if renewal rate &lt;65%. Possible <strong>verification checks</strong> on activation regularity.</p></div>
+          <div class="term-item t-cyan"><div class="term-num">7</div><p class="term-text" data-i18n="term7"><strong>Port-out deductions:</strong> Port-out without FCA or without plan/use. Port-out within 7 days (except plans >€9.99). Port-in + port-out within 60 days = false. Pre-loaded SIMs included in calculations.</p></div>
+          <div class="term-item t-navy"><div class="term-num">8</div><p class="term-text" data-i18n="term8">Malus up to <strong>50%</strong> if renewal rate <65%. Possible <strong>verification checks</strong> on activation regularity.</p></div>
         </div>
       </div>
     </div>
@@ -705,15 +734,17 @@ en: {
   total_activations:"Total Activations:",total_port_ins:"Total Port-Ins:",tier_label:"Tier:",
   toggle_recharge:"Include Auto Recharge Cashback",
   calc_btn:"Calculate Earnings",res_title:"EARNINGS BREAKDOWN",total_earnings:"Total Earnings",
-  lbl_mnp_op:"Source Operator / GARA Type",
-  opt_premium:"Premium (Iliad / Fastweb / CoopVoce / PosteMobile) +€40",opt_other:"Other MNO / MVNO +€20",opt_no_gara:"No GARA (mixed operators)",
   gara_op_title:"GARA · Source Operator Breakdown",
+  gara_op_instruction:"Distribute your total MNP activations between Premium and Other operators. The sum must equal your total MNP count.",
   lbl_gara_premium:"Premium Operators (+€40/MNP)",lbl_gara_premium_ops:"Iliad · Fastweb · CoopVoce · PosteMobile",
   lbl_gara_other:"Other MNO / MVNO (+€20/MNP)",lbl_gara_other_ops:"All other MNO & MVNO operators",
-  gara_qty_mismatch:"⚠ GARA quantities exceed total MNP count. Values will be auto-adjusted in calculation.",
   calc_gara_premium_label:"GARA Premium (+€40)",calc_gara_other_label:"GARA Other (+€20)",
   gara_none_entered:"no GARA operators entered",
-  gara_warning:"⚠ GARA bonus requires a minimum of 15 MNP activations per month. GARA set to €0.",
+  gara_unlocked:"GARA UNLOCKED",
+  gara_qty_match:"Operator count matches total MNP activations.",
+  gara_qty_error:"⚠ GARA operator count ({garaSum}) ≠ Total MNP ({totalMnp}). They must be equal. Please adjust the Premium and Other operator quantities.",
+  auto_recharge_note:"Auto Recharge amounts shown are estimates only. Actual cashback values may vary as real plan values can differ.",
+  gara_calc_blocked:"⚠ Cannot calculate: GARA operator count ({garaSum}) does not match total MNP activations ({totalMnp}). Please fix the operator quantities above.",
   mnp_60day_note:"⏱ MNP incentives are credited after <strong>60 days</strong>, subject to continuous use & renewal (minimum 6 months).",
   bd_title:"Incentive Detail",
   calc_lte_label:"≤ €6.99 Bonus",calc_gt_label:"> €6.99 Bonus",calc_gara_bonus:"GARA Extra Boost",calc_recharge_label:"Auto Recharge Cashback",
@@ -765,15 +796,17 @@ it: {
   total_activations:"Totale Attivazioni:",total_port_ins:"Totale Port-In:",tier_label:"Fascia:",
   toggle_recharge:"Includi Cashback Ricarica Automatica",
   calc_btn:"Calcola Guadagni",res_title:"RIEPILOGO GUADAGNI",total_earnings:"Guadagni Totali",
-  lbl_mnp_op:"Operatore di Origine / Tipo GARA",
-  opt_premium:"Premium (Iliad / Fastweb / CoopVoce / PosteMobile) +€40",opt_other:"Altri MNO / MVNO +€20",opt_no_gara:"Nessun GARA (operatori misti)",
   gara_op_title:"GARA · Dettaglio Operatori di Origine",
+  gara_op_instruction:"Distribuisci le attivazioni MNP totali tra operatori Premium e Altri. La somma deve essere uguale al totale MNP.",
   lbl_gara_premium:"Operatori Premium (+€40/MNP)",lbl_gara_premium_ops:"Iliad · Fastweb · CoopVoce · PosteMobile",
   lbl_gara_other:"Altri MNO / MVNO (+€20/MNP)",lbl_gara_other_ops:"Tutti gli altri operatori MNO e MVNO",
-  gara_qty_mismatch:"⚠ Le quantità GARA superano il totale MNP. I valori saranno auto-regolati nel calcolo.",
   calc_gara_premium_label:"GARA Premium (+€40)",calc_gara_other_label:"GARA Altri (+€20)",
   gara_none_entered:"nessun operatore GARA inserito",
-  gara_warning:"⚠ Il bonus GARA richiede un minimo di 15 attivazioni MNP al mese. GARA impostato a €0.",
+  gara_unlocked:"GARA SBLOCCATO",
+  gara_qty_match:"Il conteggio operatori corrisponde al totale delle attivazioni MNP.",
+  gara_qty_error:"⚠ Conteggio operatori GARA ({garaSum}) ≠ Totale MNP ({totalMnp}). Devono essere uguali. Regola le quantità Premium e Altri.",
+  auto_recharge_note:"Gli importi della Ricarica Automatica mostrati sono solo stime. I valori reali del cashback possono variare poiché i valori effettivi dei piani possono differire.",
+  gara_calc_blocked:"⚠ Impossibile calcolare: il conteggio operatori GARA ({garaSum}) non corrisponde al totale MNP ({totalMnp}). Correggi le quantità sopra.",
   mnp_60day_note:"⏱ Gli incentivi MNP vengono accreditati dopo <strong>60 giorni</strong>, con uso continuativo e rinnovo (minimo 6 mesi).",
   bd_title:"Dettaglio Incentivo",
   calc_lte_label:"Bonus ≤ €6,99",calc_gt_label:"Bonus > €6,99",calc_gara_bonus:"GARA Extra Boost",calc_recharge_label:"Cashback Ricarica Automatica",
@@ -799,25 +832,25 @@ ur: {
   table_lte_head:"پلان ≤ €6.99",table_gt_head:"پلان > €6.99",max_mnp_label:"زیادہ سے زیادہ MNP",
   th_type:"قسم",th_from1:"1 سے <sup>(2)</sup>",th_from6:"6 سے",th_from15:"15 سے",th_from35:"35 سے",
   new_act_label:"نئی ایکٹ.",plus_sim_margin:"+ SIM مارجن →",
-  fn1:"پورٹ-ان کے لیے کم از کم پلان: €5.99 | نئی ایکٹیویشنز: €6.99۔",fn2:"حدود MNP اور نئی ایکٹیویشنز کے لیے الگ الگ شمار ہوتی ہیں۔",fn3:"صرف اہل پلان۔ نیچے مخصوص سیکشن دیکھیں۔",
+  fn1:"پورٹ-ان کے لیے کم از کم پلان: €5.99 | نئی ایکٹیویشنز: €6.99۔",fn2:"حدود MNP اور نئی ایکٹیویشنز کے لیے الگ الگ شمار۔",fn3:"صرف اہل پلان۔ نیچے دیکھیں۔",
   tag_gara:"گارا بونس",sec2_title:"گارا ایکسٹرا بوسٹ",gara_eyebrow:"🌸 خصوصی بہار بونس",gara_title:"گارا ایکسٹرا بوسٹ",
   gara_for:"تمام MNP ایکٹیویشنز کے لیے",gara_req:"کم از کم ضرورت: <span>15+ MNP</span> ماہانہ",
   per_mnp:"فی MNP",from_ops:"آپریٹرز سے",other_ops:"دیگر MNO<br>اور MVNO",
   gara_cond_title:"گارا شرائط",gara_c1:"درست پورٹ-ان آفر + مکمل پورٹ-ان + FCA اسی مہینے میں۔",
-  gara_c2:"صرف منفرد صارفین + IMEI تصدیق۔",gara_c3:"انسینٹوز 60 دن بعد جمع ہوتے ہیں (کم از کم 6 ماہ)۔",
+  gara_c2:"صرف منفرد صارفین + IMEI تصدیق۔",gara_c3:"انسینٹوز 60 دن بعد (کم از کم 6 ماہ)۔",
   gara_c4:"شرائط کی خلاف ورزی والی ایکٹیویشنز اہل نہیں۔",
   tag_recharge:"خودکار ریچارج",sec3_title:"خودکار ریچارج انسینٹو",recharge_eyebrow:"🌸 بہار اضافی انسینٹو",recharge_title:"خودکار ریچارج",
   recharge_badge_label:"پلان کی قیمت بطور",recharge_badge_val:"کیش بیک",
   step1:"<strong>CPOS</strong> کے ذریعے پلان فعال کریں",step2:"<strong>کریڈٹ/ڈیبٹ کارڈ</strong> منتخب کریں",step3:"<strong>QR کوڈ</strong> اسکین کریں",
-  recharge_note_label:"نوٹ:",recharge_note:"صرف POS ایکٹیویشنز۔ APP/ONLINE کے لیے درست نہیں۔ فی MSISDN صرف پہلا پلان۔",
+  recharge_note_label:"نوٹ:",recharge_note:"صرف POS۔ APP/ONLINE کے لیے نہیں۔ فی MSISDN صرف پہلا پلان۔",
   tag_reduced:"کم رینیوول",sec4_title:"کم رینیوول شرائط",reduced_head:"جب رینیوول ریٹ کم ہو",
-  reduced_desc:"اگر قومی پلان رینیوول (T1) <strong style='color:#fff'>&lt;30%</strong> ہو یا پورٹ-ان پلان رینیوول <strong style='color:#fff'>&lt;50%</strong> ہو تو کم انسینٹو لاگو ہوگا:",
+  reduced_desc:"اگر T1 <strong style='color:#fff'>&lt;30%</strong> ہو یا پورٹ-ان رینیوول <strong style='color:#fff'>&lt;50%</strong> ہو تو کم انسینٹو لاگو:",
   th_plan_type:"پلان کی قسم",
   tag_plans:"اہل پلانز",sec5_title:"انسینٹو کے لیے اہل پلانز",ptab_mnp:"→ MNP پورٹ-ان پلانز",ptab_new:"→ نئی ایکٹیویشن پلانز",
   plans_national:"قومی",plans_5g_national:"5G قومی",plans_international:"بین الاقوامی",th_plan:"پلان",th_price:"قیمت",
   tag_calc:"انٹرایکٹو کیلکولیٹر",sec6_title:"انسینٹو کیلکولیٹر",calc_tab_new:"نئی ایکٹیویشنز",calc_tab_mnp:"MNP پورٹ-ان",
-  calc_new_desc:"ہر پلان ٹائر کے لیے نئی ایکٹیویشنز کی تعداد درج کریں۔ ٹیئر کل مجموعی ایکٹیویشنز سے طے ہوتا ہے۔",
-  calc_mnp_desc:"ہر پلان ٹائر کے لیے MNP پورٹ-ان کی تعداد درج کریں۔ ٹیئر کل MNP تعداد پر مبنی ہے۔ گارا کے لیے 15+ ضروری ہے۔",
+  calc_new_desc:"ہر پلان ٹائر کے لیے نئی ایکٹیویشنز درج کریں۔ ٹیئر کل مجموعی سے طے ہوتا ہے۔",
+  calc_mnp_desc:"ہر پلان ٹائر کے لیے MNP پورٹ-ان درج کریں۔ ٹیئر کل MNP پر مبنی ہے۔ گارا کے لیے 15+ ضروری۔",
   lbl_new_lte:"پلان ≤ €6.99",lbl_new_gt:"پلان > €6.99",lbl_qty_lte:"تعداد (≤ €6.99)",lbl_qty_gt:"تعداد (> €6.99)",
   lbl_new_lte_hint:"Italy Pink (€6.99)",lbl_new_gt_hint:"Italy Silver, Gold, White, Red · Lyca 5G · Globe 5G (€7.99–€14.99)",
   lbl_mnp_lte:"MNP پلان ≤ €6.99",lbl_mnp_gt:"MNP پلان > €6.99",
@@ -825,15 +858,17 @@ ur: {
   total_activations:"کل ایکٹیویشنز:",total_port_ins:"کل پورٹ-ان:",tier_label:"ٹیئر:",
   toggle_recharge:"خودکار ریچارج کیش بیک شامل کریں",
   calc_btn:"کمائی حساب کریں",res_title:"آمدنی کی تفصیل",total_earnings:"کل کمائی",
-  lbl_mnp_op:"آپریٹر / گارا کی قسم",
-  opt_premium:"پریمیم (Iliad/Fastweb/CoopVoce/PosteMobile) +€40",opt_other:"دیگر MNO/MVNO +€20",opt_no_gara:"کوئی گارا نہیں (مخلوط آپریٹرز)",
   gara_op_title:"گارا · سورس آپریٹر تفصیل",
+  gara_op_instruction:"اپنی کل MNP ایکٹیویشنز پریمیم اور دیگر آپریٹرز میں تقسیم کریں۔ مجموعہ کل MNP کے برابر ہونا چاہیے۔",
   lbl_gara_premium:"پریمیم آپریٹرز (+€40/MNP)",lbl_gara_premium_ops:"Iliad · Fastweb · CoopVoce · PosteMobile",
   lbl_gara_other:"دیگر MNO / MVNO (+€20/MNP)",lbl_gara_other_ops:"تمام دیگر MNO اور MVNO آپریٹرز",
-  gara_qty_mismatch:"⚠ گارا تعداد کل MNP سے زیادہ ہے۔ حساب میں خود بخود ایڈجسٹ ہو جائے گا۔",
   calc_gara_premium_label:"گارا پریمیم (+€40)",calc_gara_other_label:"گارا دیگر (+€20)",
   gara_none_entered:"کوئی گارا آپریٹر درج نہیں",
-  gara_warning:"⚠ گارا بونس کے لیے کم از کم 15 MNP ضروری ہیں۔ گارا €0 سیٹ کیا گیا۔",
+  gara_unlocked:"گارا ان لاک",
+  gara_qty_match:"آپریٹر تعداد کل MNP ایکٹیویشنز سے مماثل ہے۔",
+  gara_qty_error:"⚠ گارا آپریٹر تعداد ({garaSum}) ≠ کل MNP ({totalMnp})۔ برابر ہونا ضروری ہے۔ پریمیم اور دیگر آپریٹر تعداد درست کریں۔",
+  auto_recharge_note:"خودکار ریچارج رقوم صرف تخمینہ ہیں۔ اصل کیش بیک مختلف ہو سکتا ہے۔",
+  gara_calc_blocked:"⚠ حساب نہیں ہو سکتا: گارا آپریٹر تعداد ({garaSum}) کل MNP ({totalMnp}) سے مماثل نہیں۔ اوپر آپریٹر تعداد درست کریں۔",
   mnp_60day_note:"⏱ MNP انسینٹو <strong>60 دن</strong> بعد جمع ہوتا ہے (کم از کم 6 ماہ)۔",
   bd_title:"انسینٹو تفصیل",
   calc_lte_label:"≤ €6.99 بونس",calc_gt_label:"> €6.99 بونس",calc_gara_bonus:"گارا ایکسٹرا بوسٹ",calc_recharge_label:"خودکار ریچارج کیش بیک",
@@ -841,7 +876,7 @@ ur: {
   tag_terms:"شرائط و ضوابط",sec7_title:"پروگرام کی شرائط",terms_head:"شرائط و ضوابط",
   term1:"ہر مہینے کم از کم <strong>1 SIM مع FCA</strong>۔",term2:"پورٹ-ان: <strong>€5.99</strong> | نئی: <strong>€6.99</strong>۔ <strong>الگ الگ</strong> شمار۔",
   term3:"SIM کو <strong>FCA</strong> مکمل کرنا ضروری ہے۔",term4:"پورٹ-ان انسینٹو <strong>60 دن</strong> بعد۔",
-  term5:"≥10 ایکٹیویشنز جن میں >5% بغیر استعمال: <strong>کٹوتی</strong>۔ فی غلط استعمال <strong>€10</strong> جرمانہ۔",
+  term5:"≥10 ایکٹیویشنز جن میں >5% بغیر استعمال: <strong>کٹوتی</strong>۔ فی غلط استعمال <strong>€10</strong>۔",
   term6:"POS کے ذریعے NON-HP SIM پر <strong>+€5</strong> (زیادہ سے زیادہ €100)۔",
   term7:"<strong>پورٹ-آؤٹ کٹوتیاں:</strong> FCA کے بغیر پورٹ-آؤٹ۔ 60 دن کے اندر پورٹ-ان + پورٹ-آؤٹ = جعلی۔",
   term8:"رینیوول ریٹ &lt;65% پر <strong>50%</strong> تک مالُس۔",
@@ -874,7 +909,7 @@ bn: {
   tag_plans:"যোগ্য প্ল্যান",sec5_title:"ইনসেন্টিভের জন্য যোগ্য প্ল্যান",ptab_mnp:"→ MNP পোর্ট-ইন প্ল্যান",ptab_new:"→ নতুন অ্যাক্টিভেশন প্ল্যান",
   plans_national:"জাতীয়",plans_5g_national:"5G জাতীয়",plans_international:"আন্তর্জাতিক",th_plan:"প্ল্যান",th_price:"মূল্য",
   tag_calc:"ইন্টারেক্টিভ ক্যালকুলেটর",sec6_title:"ইনসেন্টিভ ক্যালকুলেটর",calc_tab_new:"নতুন অ্যাক্টিভেশন",calc_tab_mnp:"MNP পোর্ট-ইন",
-  calc_new_desc:"প্রতিটি প্ল্যান টিয়ারের জন্য অ্যাক্টিভেশনের সংখ্যা দিন। টিয়ার মোট সমন্বিত অ্যাক্টিভেশন দ্বারা নির্ধারিত।",
+  calc_new_desc:"প্রতিটি প্ল্যান টিয়ারের জন্য অ্যাক্টিভেশনের সংখ্যা দিন। টিয়ার মোট সমন্বিত দ্বারা নির্ধারিত।",
   calc_mnp_desc:"প্রতিটি প্ল্যান টিয়ারের জন্য MNP সংখ্যা দিন। টিয়ার মোট MNP এর উপর ভিত্তি করে। গারার জন্য 15+ প্রয়োজন।",
   lbl_new_lte:"প্ল্যান ≤ €6.99",lbl_new_gt:"প্ল্যান > €6.99",lbl_qty_lte:"পরিমাণ (≤ €6.99)",lbl_qty_gt:"পরিমাণ (> €6.99)",
   lbl_new_lte_hint:"Italy Pink (€6.99)",lbl_new_gt_hint:"Italy Silver, Gold, White, Red · Lyca 5G · Globe 5G (€7.99–€14.99)",
@@ -883,15 +918,17 @@ bn: {
   total_activations:"মোট অ্যাক্টিভেশন:",total_port_ins:"মোট পোর্ট-ইন:",tier_label:"টিয়ার:",
   toggle_recharge:"অটো রিচার্জ ক্যাশব্যাক অন্তর্ভুক্ত করুন",
   calc_btn:"উপার্জন গণনা করুন",res_title:"উপার্জনের বিবরণ",total_earnings:"মোট উপার্জন",
-  lbl_mnp_op:"অপারেটর / গারা ধরন",
-  opt_premium:"প্রিমিয়াম (Iliad/Fastweb/CoopVoce/PosteMobile) +€40",opt_other:"অন্যান্য MNO/MVNO +€20",opt_no_gara:"কোনো গারা নেই",
   gara_op_title:"গারা · সোর্স অপারেটর বিবরণ",
+  gara_op_instruction:"আপনার মোট MNP অ্যাক্টিভেশন প্রিমিয়াম এবং অন্যান্য অপারেটরে ভাগ করুন। যোগফল মোট MNP-র সমান হতে হবে।",
   lbl_gara_premium:"প্রিমিয়াম অপারেটর (+€40/MNP)",lbl_gara_premium_ops:"Iliad · Fastweb · CoopVoce · PosteMobile",
   lbl_gara_other:"অন্যান্য MNO / MVNO (+€20/MNP)",lbl_gara_other_ops:"সকল অন্যান্য MNO ও MVNO অপারেটর",
-  gara_qty_mismatch:"⚠ গারা পরিমাণ মোট MNP ছাড়িয়ে গেছে। গণনায় স্বয়ংক্রিয়ভাবে সমন্বয় হবে।",
   calc_gara_premium_label:"গারা প্রিমিয়াম (+€40)",calc_gara_other_label:"গারা অন্যান্য (+€20)",
   gara_none_entered:"কোনো গারা অপারেটর দেওয়া হয়নি",
-  gara_warning:"⚠ গারার জন্য ন্যূনতম 15 MNP প্রয়োজন। গারা €0।",
+  gara_unlocked:"গারা আনলক",
+  gara_qty_match:"অপারেটর সংখ্যা মোট MNP অ্যাক্টিভেশনের সাথে মিলেছে।",
+  gara_qty_error:"⚠ গারা অপারেটর সংখ্যা ({garaSum}) ≠ মোট MNP ({totalMnp})। সমান হতে হবে। প্রিমিয়াম এবং অন্যান্য অপারেটর সংখ্যা ঠিক করুন।",
+  auto_recharge_note:"অটো রিচার্জ পরিমাণ শুধুমাত্র অনুমান। প্ল্যানের প্রকৃত মূল্য ভিন্ন হতে পারে বলে প্রকৃত ক্যাশব্যাক পরিবর্তিত হতে পারে।",
+  gara_calc_blocked:"⚠ গণনা সম্ভব নয়: গারা অপারেটর সংখ্যা ({garaSum}) মোট MNP ({totalMnp}) এর সাথে মিলছে না। উপরে অপারেটর সংখ্যা ঠিক করুন।",
   mnp_60day_note:"⏱ MNP ইনসেন্টিভ <strong>60 দিন</strong> পরে (সর্বনিম্ন 6 মাস)।",
   bd_title:"ইনসেন্টিভ বিবরণ",
   calc_lte_label:"≤ €6.99 বোনাস",calc_gt_label:"> €6.99 বোনাস",calc_gara_bonus:"গারা এক্সট্রা বুস্ট",calc_recharge_label:"অটো রিচার্জ ক্যাশব্যাক",
@@ -915,25 +952,23 @@ function getTierKey(total){ return total>=35?35:total>=15?15:total>=6?6:1; }
 function getTierLabel(total){ return total>=35?'35+':total>=15?'15–34':total>=6?'6–14':'1–5'; }
 
 // ============ INCENTIVE RATE TABLES ============
-// New Activations: rates per tier
-var newRatesLTE = {1:3,6:5,15:6,35:7};  // Plans ≤ €6.99
-var newRatesGT  = {1:5,6:6,15:7,35:9};  // Plans > €6.99
-
-// MNP: rates per tier
-var mnpRatesLTE = {1:8,6:17,15:20,35:23};  // Plans ≤ €6.99
-var mnpRatesGT  = {1:12,6:27,15:31,35:38}; // Plans > €6.99
-
-// Average plan values for recharge cashback estimation
+var newRatesLTE = {1:3,6:5,15:6,35:7};
+var newRatesGT  = {1:5,6:6,15:7,35:9};
+var mnpRatesLTE = {1:8,6:17,15:20,35:23};
+var mnpRatesGT  = {1:12,6:27,15:31,35:38};
 var AVG_LTE_NEW = 6.99;
 var AVG_GT_NEW = 9.99;
 var AVG_LTE_MNP = 5.99;
 var AVG_GT_MNP = 9.99;
 
+// ============ DOM REFERENCES ============
+var $=function(id){return document.getElementById(id);};
+
 // ============ LANGUAGE SWITCHER ============
 function setLang(lang){
   curLang=lang;
   ['en','it','ur','bn'].forEach(function(l){
-    document.getElementById('btn-'+l).classList.toggle('active',l===lang);
+    $('btn-'+l).classList.toggle('active',l===lang);
   });
   document.documentElement.lang=lang;
   if(lang==='ur'){document.body.classList.add('rtl');document.body.style.direction='rtl';}
@@ -941,54 +976,124 @@ function setLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(function(el){
     var k=el.getAttribute('data-i18n');var v=t(k);if(v)el.innerHTML=v;
   });
-  document.getElementById('res-new').classList.remove('visible');
-  document.getElementById('res-mnp').classList.remove('visible');
+  $('res-new').classList.remove('visible');
+  $('res-mnp').classList.remove('visible');
   updateNewTier();
   updateMnpTier();
 }
 
 // ============ TAB SWITCHES ============
 function switchCalcTab(tab){
-  document.getElementById('tab-new').classList.toggle('active',tab==='new');
-  document.getElementById('tab-mnp').classList.toggle('active',tab==='mnp');
-  document.getElementById('calc-new').classList.toggle('active',tab==='new');
-  document.getElementById('calc-mnp').classList.toggle('active',tab==='mnp');
+  $('tab-new').classList.toggle('active',tab==='new');
+  $('tab-mnp').classList.toggle('active',tab==='mnp');
+  $('calc-new').classList.toggle('active',tab==='new');
+  $('calc-mnp').classList.toggle('active',tab==='mnp');
 }
 function switchPlansTab(tab){
-  document.getElementById('ptab-mnp').classList.toggle('active',tab==='mnp');
-  document.getElementById('ptab-new').classList.toggle('active',tab==='new');
-  document.getElementById('ptab-new').classList.toggle('blue-active',tab==='new');
-  document.getElementById('ppanel-mnp').classList.toggle('active',tab==='mnp');
-  document.getElementById('ppanel-new').classList.toggle('active',tab==='new');
+  $('ptab-mnp').classList.toggle('active',tab==='mnp');
+  $('ptab-new').classList.toggle('active',tab==='new');
+  $('ptab-new').classList.toggle('blue-active',tab==='new');
+  $('ppanel-mnp').classList.toggle('active',tab==='mnp');
+  $('ppanel-new').classList.toggle('active',tab==='new');
 }
 
 // ============ LIVE TIER DISPLAY ============
 function updateNewTier(){
-  var lte = parseInt(document.getElementById('n-qty-lte').value)||0;
-  var gt = parseInt(document.getElementById('n-qty-gt').value)||0;
+  var lte = parseInt($('n-qty-lte').value)||0;
+  var gt = parseInt($('n-qty-gt').value)||0;
   var total = lte + gt;
-  document.getElementById('n-total-display').textContent = total;
-  document.getElementById('n-tier-display').textContent = total>0?getTierLabel(total):'—';
+  $('n-total-display').textContent = total;
+  $('n-tier-display').textContent = total>0?getTierLabel(total):'—';
+  // Show/hide auto recharge note
+  var noteEl = $('recharge-note-new');
+  if($('n-recharge').checked){ noteEl.classList.add('visible'); }
+  else { noteEl.classList.remove('visible'); }
 }
+
 function updateMnpTier(){
-  var lte = parseInt(document.getElementById('m-qty-lte').value)||0;
-  var gt = parseInt(document.getElementById('m-qty-gt').value)||0;
+  var lte = parseInt($('m-qty-lte').value)||0;
+  var gt = parseInt($('m-qty-gt').value)||0;
   var total = lte + gt;
-  document.getElementById('m-total-display').textContent = total;
-  document.getElementById('m-tier-display').textContent = total>0?getTierLabel(total):'—';
-  // GARA warning
-  document.getElementById('gara-warning').style.display = total<15?'block':'none';
+  var garaEligible = total >= 15;
+
+  // Update tier display
+  $('m-total-display').textContent = total;
+  $('m-tier-display').textContent = total>0?getTierLabel(total):'—';
+
+  // Show/hide GARA UNLOCKED badge next to tier
+  var badge = $('gara-unlocked-badge');
+  if(garaEligible){
+    badge.classList.add('visible');
+  } else {
+    badge.classList.remove('visible');
+  }
+
+  // Show/hide GARA operator input section
+  var garaSection = $('gara-calc-section');
+  if(garaEligible){
+    garaSection.classList.add('visible');
+  } else {
+    garaSection.classList.remove('visible');
+    // Reset GARA inputs when hidden
+    $('m-gara-premium').value = 0;
+    $('m-gara-other').value = 0;
+    $('gara-match-msg').classList.remove('visible');
+    $('gara-error-msg').classList.remove('visible');
+  }
+
+  // Show/hide auto recharge note
+  var noteEl = $('recharge-note-mnp');
+  if($('m-recharge').checked){ noteEl.classList.add('visible'); }
+  else { noteEl.classList.remove('visible'); }
+
+  // Validate GARA quantities if section is visible
+  if(garaEligible){ validateGaraQty(); }
+}
+
+// ============ GARA QTY VALIDATION ============
+function validateGaraQty(){
+  var lte = parseInt($('m-qty-lte').value)||0;
+  var gt = parseInt($('m-qty-gt').value)||0;
+  var totalMnp = lte + gt;
+  var garaPrem = parseInt($('m-gara-premium').value)||0;
+  var garaOth = parseInt($('m-gara-other').value)||0;
+  var garaSum = garaPrem + garaOth;
+
+  var matchMsg = $('gara-match-msg');
+  var errorMsg = $('gara-error-msg');
+
+  if(totalMnp < 15){
+    matchMsg.classList.remove('visible');
+    errorMsg.classList.remove('visible');
+    return;
+  }
+
+  if(garaSum === 0){
+    // No input yet — no message
+    matchMsg.classList.remove('visible');
+    errorMsg.classList.remove('visible');
+  } else if(garaSum === totalMnp){
+    // Perfect match
+    matchMsg.classList.add('visible');
+    errorMsg.classList.remove('visible');
+  } else {
+    // Mismatch — show error (whether too high OR too low)
+    matchMsg.classList.remove('visible');
+    var errText = t('gara_qty_error').replace('{garaSum}', garaSum).replace('{totalMnp}', totalMnp);
+    errorMsg.innerHTML = errText;
+    errorMsg.classList.add('visible');
+  }
 }
 
 // ============ CALCULATOR: NEW ACTIVATIONS ============
 function calcNew(){
-  var qtyLTE = parseInt(document.getElementById('n-qty-lte').value)||0;
-  var qtyGT = parseInt(document.getElementById('n-qty-gt').value)||0;
-  var withRecharge = document.getElementById('n-recharge').checked;
+  var qtyLTE = parseInt($('n-qty-lte').value)||0;
+  var qtyGT = parseInt($('n-qty-gt').value)||0;
+  var withRecharge = $('n-recharge').checked;
   var total = qtyLTE + qtyGT;
 
   if(total===0){
-    document.getElementById('res-new').classList.remove('visible');
+    $('res-new').classList.remove('visible');
     return;
   }
 
@@ -1011,59 +1116,51 @@ function calcNew(){
     html += '<div class="result-row"><span>'+t('calc_gt_label')+' ('+qtyGT+' × €'+rateGT+') <span style="opacity:.5;font-size:12px;">'+t('tier_label')+' '+getTierLabel(total)+'</span></span><span class="r-val blue">'+fmt(totalGT)+'</span></div>';
   }
   if(withRecharge){
-    html += '<div class="result-row"><span>'+t('calc_recharge_label')+'</span><span class="r-val gold">'+fmt(rechargeTotal)+'</span></div>';
+    html += '<div class="result-row"><span>'+t('calc_recharge_label')+' <span style="opacity:.5;font-size:11px;">⚠ '+t('auto_recharge_note').substring(0,50)+'...</span></span><span class="r-val gold">≈'+fmt(rechargeTotal)+'</span></div>';
   }
 
-  document.getElementById('res-new-rows').innerHTML = html;
-  document.getElementById('res-new-total').textContent = fmt(grand);
-  document.getElementById('res-new').classList.add('visible');
+  $('res-new-rows').innerHTML = html;
+  $('res-new-total').textContent = withRecharge ? '≈'+fmt(grand) : fmt(grand);
+  $('res-new').classList.add('visible');
+
+  // Show/hide recharge note
+  var noteEl = $('recharge-note-new');
+  if(withRecharge){ noteEl.classList.add('visible'); }
+  else { noteEl.classList.remove('visible'); }
 }
 
 // ============ CALCULATOR: MNP PORT-IN ============
-function validateGaraQty(){
-  var qtyLTE = parseInt(document.getElementById('m-qty-lte').value)||0;
-  var qtyGT = parseInt(document.getElementById('m-qty-gt').value)||0;
-  var total = qtyLTE + qtyGT;
-  var garaPrem = parseInt(document.getElementById('m-gara-premium').value)||0;
-  var garaOth = parseInt(document.getElementById('m-gara-other').value)||0;
-  var garaSum = garaPrem + garaOth;
-  var hint = document.getElementById('gara-qty-hint');
-  if(garaSum > total && total > 0){
-    hint.style.display = 'block';
-  } else {
-    hint.style.display = 'none';
-  }
-}
-
 function calcMnp(){
-  var qtyLTE = parseInt(document.getElementById('m-qty-lte').value)||0;
-  var qtyGT = parseInt(document.getElementById('m-qty-gt').value)||0;
-  var garaPremQty = parseInt(document.getElementById('m-gara-premium').value)||0;
-  var garaOthQty = parseInt(document.getElementById('m-gara-other').value)||0;
-  var withRecharge = document.getElementById('m-recharge').checked;
-  var total = qtyLTE + qtyGT;
+  var qtyLTE = parseInt($('m-qty-lte').value)||0;
+  var qtyGT = parseInt($('m-qty-gt').value)||0;
+  var withRecharge = $('m-recharge').checked;
+  var totalMnp = qtyLTE + qtyGT;
 
-  if(total===0){
-    document.getElementById('res-mnp').classList.remove('visible');
+  if(totalMnp===0){
+    $('res-mnp').classList.remove('visible');
     return;
   }
 
-  // Cap GARA quantities to total MNP
+  var garaPremQty = parseInt($('m-gara-premium').value)||0;
+  var garaOthQty = parseInt($('m-gara-other').value)||0;
   var garaSum = garaPremQty + garaOthQty;
-  if(garaSum > total){
-    var ratio = total / garaSum;
-    garaPremQty = Math.round(garaPremQty * ratio);
-    garaOthQty = total - garaPremQty;
+  var garaEligible = totalMnp >= 15;
+
+  // BLOCK calculation if GARA is eligible AND operator qty doesn't match total MNP
+  if(garaEligible && garaSum > 0 && garaSum !== totalMnp){
+    var blockText = t('gara_calc_blocked').replace('{garaSum}', garaSum).replace('{totalMnp}', totalMnp);
+    $('res-mnp-rows').innerHTML = '<div class="result-row" style="background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);"><span style="color:#fca5a5;">'+blockText+'</span></div>';
+    $('res-mnp-total').textContent = '—';
+    $('res-mnp').classList.add('visible');
+    return;
   }
 
-  var tier = getTierKey(total);
+  var tier = getTierKey(totalMnp);
   var rateLTE = mnpRatesLTE[tier];
   var rateGT = mnpRatesGT[tier];
 
-  // GARA only applies when total MNP >= 15
-  var garaEligible = total >= 15;
-  var garaPremTotal = garaEligible ? garaPremQty * 40 : 0;
-  var garaOthTotal = garaEligible ? garaOthQty * 20 : 0;
+  var garaPremTotal = (garaEligible && garaSum === totalMnp) ? garaPremQty * 40 : 0;
+  var garaOthTotal = (garaEligible && garaSum === totalMnp) ? garaOthQty * 20 : 0;
   var garaTotal = garaPremTotal + garaOthTotal;
 
   var stdLTE = qtyLTE * rateLTE;
@@ -1074,74 +1171,90 @@ function calcMnp(){
 
   var html = '';
   if(qtyLTE>0){
-    html += '<div class="result-row"><span>MNP ≤€6.99 ('+qtyLTE+' × €'+rateLTE+') <span style="opacity:.5;font-size:12px;">'+t('tier_label')+' '+getTierLabel(total)+'</span></span><span class="r-val green">'+fmt(stdLTE)+'</span></div>';
+    html += '<div class="result-row"><span>MNP ≤€6.99 ('+qtyLTE+' × €'+rateLTE+') <span style="opacity:.5;font-size:12px;">'+t('tier_label')+' '+getTierLabel(totalMnp)+'</span></span><span class="r-val green">'+fmt(stdLTE)+'</span></div>';
   }
   if(qtyGT>0){
-    html += '<div class="result-row"><span>MNP >€6.99 ('+qtyGT+' × €'+rateGT+') <span style="opacity:.5;font-size:12px;">'+t('tier_label')+' '+getTierLabel(total)+'</span></span><span class="r-val blue">'+fmt(stdGT)+'</span></div>';
+    html += '<div class="result-row"><span>MNP >€6.99 ('+qtyGT+' × €'+rateGT+') <span style="opacity:.5;font-size:12px;">'+t('tier_label')+' '+getTierLabel(totalMnp)+'</span></span><span class="r-val blue">'+fmt(stdGT)+'</span></div>';
   }
-  // GARA Premium row
-  if(garaEligible && garaPremQty>0){
+  if(garaEligible && garaPremQty>0 && garaSum===totalMnp){
     html += '<div class="result-row"><span>'+t('calc_gara_premium_label')+' ('+garaPremQty+' × €40)</span><span class="r-val green">'+fmt(garaPremTotal)+'</span></div>';
   }
-  // GARA Other row
-  if(garaEligible && garaOthQty>0){
+  if(garaEligible && garaOthQty>0 && garaSum===totalMnp){
     html += '<div class="result-row"><span>'+t('calc_gara_other_label')+' ('+garaOthQty+' × €20)</span><span class="r-val blue">'+fmt(garaOthTotal)+'</span></div>';
   }
-  // If not eligible or no GARA entered
-  if(!garaEligible && (garaPremQty>0 || garaOthQty>0)){
+  if(!garaEligible){
     html += '<div class="result-row"><span>'+t('calc_gara_bonus')+' — '+t('gara_not_met')+'</span><span class="r-val dim">€0</span></div>';
-  } else if(garaPremQty===0 && garaOthQty===0){
+  } else if(garaSum===0){
     html += '<div class="result-row"><span>'+t('calc_gara_bonus')+' — '+t('gara_none_entered')+'</span><span class="r-val dim">€0</span></div>';
   }
   if(withRecharge){
-    html += '<div class="result-row"><span>'+t('calc_recharge_label')+'</span><span class="r-val gold">'+fmt(rechargeTotal)+'</span></div>';
+    html += '<div class="result-row"><span>'+t('calc_recharge_label')+' <span style="opacity:.5;font-size:11px;">⚠ estimate</span></span><span class="r-val gold">≈'+fmt(rechargeTotal)+'</span></div>';
   }
 
-  document.getElementById('res-mnp-rows').innerHTML = html;
+  $('res-mnp-rows').innerHTML = html;
 
   // Breakdown
   var bdHtml = '';
   if(qtyLTE>0) bdHtml += '<div class="bd-item"><span>MNP ≤€6.99 ('+qtyLTE+' × €'+rateLTE+')</span><span class="bd-v">'+fmt(stdLTE)+'</span></div>';
   if(qtyGT>0) bdHtml += '<div class="bd-item"><span>MNP >€6.99 ('+qtyGT+' × €'+rateGT+')</span><span class="bd-v">'+fmt(stdGT)+'</span></div>';
-  if(garaEligible && garaPremQty>0) bdHtml += '<div class="bd-item"><span>GARA Premium ('+garaPremQty+' × €40)</span><span class="bd-v gara">'+fmt(garaPremTotal)+'</span></div>';
-  if(garaEligible && garaOthQty>0) bdHtml += '<div class="bd-item"><span>GARA Other ('+garaOthQty+' × €20)</span><span class="bd-v">'+fmt(garaOthTotal)+'</span></div>';
+  if(garaEligible && garaPremQty>0 && garaSum===totalMnp) bdHtml += '<div class="bd-item"><span>GARA Premium ('+garaPremQty+' × €40)</span><span class="bd-v gara">'+fmt(garaPremTotal)+'</span></div>';
+  if(garaEligible && garaOthQty>0 && garaSum===totalMnp) bdHtml += '<div class="bd-item"><span>GARA Other ('+garaOthQty+' × €20)</span><span class="bd-v">'+fmt(garaOthTotal)+'</span></div>';
   if(!garaEligible) bdHtml += '<div class="bd-item"><span>'+t('calc_gara_bonus')+'</span><span class="bd-v" style="color:rgba(255,255,255,.3);">€0 — '+t('gara_not_met')+'</span></div>';
-  if(withRecharge) bdHtml += '<div class="bd-item"><span>'+t('calc_recharge_label')+'</span><span class="bd-v gold">'+fmt(rechargeTotal)+'</span></div>';
-  document.getElementById('bd-items').innerHTML = bdHtml;
+  if(withRecharge) bdHtml += '<div class="bd-item"><span>'+t('calc_recharge_label')+' (estimate)</span><span class="bd-v gold">≈'+fmt(rechargeTotal)+'</span></div>';
+  $('bd-items').innerHTML = bdHtml;
 
-  document.getElementById('res-mnp-total').textContent = fmt(grand);
-  document.getElementById('res-mnp').classList.add('visible');
+  $('res-mnp-total').textContent = withRecharge ? '≈'+fmt(grand) : fmt(grand);
+  $('res-mnp').classList.add('visible');
+
+  // Show/hide recharge note
+  var noteEl = $('recharge-note-mnp');
+  if(withRecharge){ noteEl.classList.add('visible'); }
+  else { noteEl.classList.remove('visible'); }
 }
 
 // ============ EVENT LISTENERS ============
-document.getElementById('btn-en').addEventListener('click',function(){setLang('en');});
-document.getElementById('btn-it').addEventListener('click',function(){setLang('it');});
-document.getElementById('btn-ur').addEventListener('click',function(){setLang('ur');});
-document.getElementById('btn-bn').addEventListener('click',function(){setLang('bn');});
-document.getElementById('tab-new').addEventListener('click',function(){switchCalcTab('new');});
-document.getElementById('tab-mnp').addEventListener('click',function(){switchCalcTab('mnp');});
-document.getElementById('ptab-mnp').addEventListener('click',function(){switchPlansTab('mnp');});
-document.getElementById('ptab-new').addEventListener('click',function(){switchPlansTab('new');});
-document.getElementById('btn-calc-new').addEventListener('click',calcNew);
-document.getElementById('btn-calc-mnp').addEventListener('click',calcMnp);
+$('btn-en').addEventListener('click',function(){setLang('en');});
+$('btn-it').addEventListener('click',function(){setLang('it');});
+$('btn-ur').addEventListener('click',function(){setLang('ur');});
+$('btn-bn').addEventListener('click',function(){setLang('bn');});
+$('tab-new').addEventListener('click',function(){switchCalcTab('new');});
+$('tab-mnp').addEventListener('click',function(){switchCalcTab('mnp');});
+$('ptab-mnp').addEventListener('click',function(){switchPlansTab('mnp');});
+$('ptab-new').addEventListener('click',function(){switchPlansTab('new');});
+$('btn-calc-new').addEventListener('click',calcNew);
+$('btn-calc-mnp').addEventListener('click',calcMnp);
 
-// Live tier updates
-document.getElementById('n-qty-lte').addEventListener('input',updateNewTier);
-document.getElementById('n-qty-gt').addEventListener('input',updateNewTier);
-document.getElementById('m-qty-lte').addEventListener('input',function(){updateMnpTier();validateGaraQty();});
-document.getElementById('m-qty-gt').addEventListener('input',function(){updateMnpTier();validateGaraQty();});
+// Live tier updates for New Activations
+$('n-qty-lte').addEventListener('input',updateNewTier);
+$('n-qty-gt').addEventListener('input',updateNewTier);
+
+// Live tier updates for MNP (also controls GARA visibility)
+$('m-qty-lte').addEventListener('input',updateMnpTier);
+$('m-qty-gt').addEventListener('input',updateMnpTier);
 
 // GARA quantity inputs - live validation
-document.getElementById('m-gara-premium').addEventListener('input',validateGaraQty);
-document.getElementById('m-gara-other').addEventListener('input',validateGaraQty);
+$('m-gara-premium').addEventListener('input',validateGaraQty);
+$('m-gara-other').addEventListener('input',validateGaraQty);
+
+// Auto recharge toggle - show/hide notes live
+$('n-recharge').addEventListener('change',function(){
+  var noteEl = $('recharge-note-new');
+  if(this.checked){ noteEl.classList.add('visible'); }
+  else { noteEl.classList.remove('visible'); }
+});
+$('m-recharge').addEventListener('change',function(){
+  var noteEl = $('recharge-note-mnp');
+  if(this.checked){ noteEl.classList.add('visible'); }
+  else { noteEl.classList.remove('visible'); }
+});
 
 // Enter key to calculate
-document.getElementById('n-qty-lte').addEventListener('keydown',function(e){if(e.key==='Enter')calcNew();});
-document.getElementById('n-qty-gt').addEventListener('keydown',function(e){if(e.key==='Enter')calcNew();});
-document.getElementById('m-qty-lte').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
-document.getElementById('m-qty-gt').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
-document.getElementById('m-gara-premium').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
-document.getElementById('m-gara-other').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
+$('n-qty-lte').addEventListener('keydown',function(e){if(e.key==='Enter')calcNew();});
+$('n-qty-gt').addEventListener('keydown',function(e){if(e.key==='Enter')calcNew();});
+$('m-qty-lte').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
+$('m-qty-gt').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
+$('m-gara-premium').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
+$('m-gara-other').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
 
 // Initialize
 updateNewTier();
