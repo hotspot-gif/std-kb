@@ -223,6 +223,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .footer-links a{color:rgba(255,255,255,.35);text-decoration:none;margin:0 10px;}
 .footer-links a:hover{color:var(--green);}
 .footer-copy{font-size:10px;color:rgba(255,255,255,.2);margin-top:14px;}
+.mnp-notes-box{margin-top:12px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;}
+.mnp-note-item{padding:10px 14px;border-radius:6px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;}
+.mnp-note-item:last-child{margin-bottom:0;}
+.mnp-note-item.note-tax{background:rgba(36,91,193,.1);border-left:3px solid var(--blue);}
+.mnp-note-item.note-renewal{background:rgba(220,38,38,.08);border-left:3px solid var(--red);}
+.mnp-note-item .note-heading{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#fff;margin-bottom:4px;}
+.mnp-note-item.note-tax .note-heading{color:#6ea4ff;}
+.mnp-note-item.note-renewal .note-heading{color:#fca5a5;}
+.sim-margin-note{padding:10px 14px;background:rgba(255,255,255,.04);border-left:3px solid rgba(255,255,255,.25);border-radius:0 6px 6px 0;font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin-top:12px;}
+.sim-margin-note strong{color:rgba(255,255,255,.7);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 body.rtl .term-item{border-left:none;border-right:3px solid transparent;}
 body.rtl .term-item.t-green{border-right-color:var(--green);}
@@ -237,6 +247,9 @@ body.rtl .disclaimer{border-left:1px solid rgba(255,255,255,.08);border-right:3p
 body.rtl .mnp-table th:first-child,body.rtl .reduced-table th:first-child,body.rtl .plan-mini-table th:first-child{text-align:right;}
 body.rtl .mnp-table td:first-child,body.rtl .reduced-table td:first-child{text-align:right;}
 body.rtl .calc-field select{background-position:left 14px center;padding-left:36px;padding-right:14px;}
+body.rtl .mnp-note-item.note-tax{border-left:none;border-right:3px solid var(--blue);}
+body.rtl .mnp-note-item.note-renewal{border-left:none;border-right:3px solid var(--red);}
+body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,255,.25);}
 @media(max-width:700px){
   .site-header{flex-wrap:wrap;height:auto;padding:12px 16px;gap:10px;}
   .header-right{width:100%;justify-content:flex-end;}
@@ -545,6 +558,10 @@ body.rtl .calc-field select{background-position:left 14px center;padding-left:36
             <span class="tot-label" data-i18n="total_earnings">Total Earnings</span>
             <span class="tot-val" id="res-new-total">€0</span>
           </div>
+          <!-- SIM Margin Note for New Activations -->
+          <div class="sim-margin-note" data-i18n="sim_margin_note">
+            <strong>ℹ SIM Margin:</strong> The examples are calculated considering a minimum SIM margin of €5; the actual margin may vary depending on the region and the reference city.
+          </div>
         </div>
       </div>
 
@@ -643,6 +660,21 @@ body.rtl .calc-field select{background-position:left 14px center;padding-left:36
           <div class="result-total">
             <span class="tot-label" data-i18n="total_earnings">Total Earnings</span>
             <span class="tot-val" id="res-mnp-total">€0</span>
+          </div>
+          <!-- SIM Margin Note for MNP -->
+          <div class="sim-margin-note" data-i18n="sim_margin_note">
+            <strong>ℹ SIM Margin:</strong> The examples are calculated considering a minimum SIM margin of €5; the actual margin may vary depending on the region and the reference city.
+          </div>
+          <!-- MNP Important Notes -->
+          <div class="mnp-notes-box">
+            <div class="mnp-note-item note-tax">
+              <div class="note-heading" data-i18n="mnp_note_tax_heading">Tax Code + IMEI</div>
+              <span data-i18n="mnp_note_tax_text">Only unique customers (unique Tax Code) and IMEI are eligible for the GARA incentive & MNP incentive.</span>
+            </div>
+            <div class="mnp-note-item note-renewal">
+              <div class="note-heading" data-i18n="mnp_note_renewal_heading">RENEWAL + USAGE</div>
+              <span data-i18n="mnp_note_renewal_text">Continuous usage and renewal required for minimum 6 months or else Malus up to 50% applicable & full clawback for fraud.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -748,7 +780,13 @@ en: {
   mnp_60day_note:"⏱ MNP incentives are credited after <strong>60 days</strong>, subject to continuous use & renewal (minimum 6 months).",
   bd_title:"Incentive Detail",
   calc_lte_label:"≤ €6.99 Bonus",calc_gt_label:"> €6.99 Bonus",calc_gara_bonus:"GARA Extra Boost",calc_recharge_label:"Auto Recharge Cashback",
+  calc_sim_margin_label:"SIM Margin (€5/SIM)",
   gara_not_met:"min. 15 MNP not reached",
+  sim_margin_note:"<strong>ℹ SIM Margin:</strong> The examples are calculated considering a minimum SIM margin of €5; the actual margin may vary depending on the region and the reference city.",
+  mnp_note_tax_heading:"Tax Code + IMEI",
+  mnp_note_tax_text:"Only unique customers (unique Tax Code) and IMEI are eligible for the GARA incentive & MNP incentive.",
+  mnp_note_renewal_heading:"RENEWAL + USAGE",
+  mnp_note_renewal_text:"Continuous usage and renewal required for minimum 6 months or else Malus up to 50% applicable & full clawback for fraud.",
   tag_terms:"Terms & Conditions",sec7_title:"Programme Terms",terms_head:"Terms & Conditions",
   term1:"Minimum <strong>1 SIM with FCA</strong> each month. Calculation period: 1st to last day of the month.",
   term2:"Min plan for port-in: <strong>€5.99</strong> | New activations: <strong>€6.99</strong>. MNP and new activations counted <strong>separately</strong>.",
@@ -810,7 +848,13 @@ it: {
   mnp_60day_note:"⏱ Gli incentivi MNP vengono accreditati dopo <strong>60 giorni</strong>, con uso continuativo e rinnovo (minimo 6 mesi).",
   bd_title:"Dettaglio Incentivo",
   calc_lte_label:"Bonus ≤ €6,99",calc_gt_label:"Bonus > €6,99",calc_gara_bonus:"GARA Extra Boost",calc_recharge_label:"Cashback Ricarica Automatica",
+  calc_sim_margin_label:"Margine SIM (€5/SIM)",
   gara_not_met:"min. 15 MNP non raggiunto",
+  sim_margin_note:"<strong>ℹ Margine SIM:</strong> Gli esempi sono calcolati considerando un margine SIM minimo di €5; il margine effettivo può variare a seconda della regione e della città di riferimento.",
+  mnp_note_tax_heading:"Codice Fiscale + IMEI",
+  mnp_note_tax_text:"Solo clienti unici (Codice Fiscale univoco) e IMEI sono idonei per l'incentivo GARA e l'incentivo MNP.",
+  mnp_note_renewal_heading:"RINNOVO + UTILIZZO",
+  mnp_note_renewal_text:"Utilizzo e rinnovo continuo richiesti per un minimo di 6 mesi, altrimenti Malus fino al 50% applicabile e recupero totale per frode.",
   tag_terms:"Termini e Condizioni",sec7_title:"Termini del Programma",terms_head:"Termini e Condizioni",
   term1:"Minimo <strong>1 SIM con FCA</strong> ogni mese. Calcolo: 1° - ultimo giorno del mese.",
   term2:"Piano minimo port-in: <strong>€5,99</strong> | Nuove attivazioni: <strong>€6,99</strong>. Nuove e port-in contate <strong>separatamente</strong>.",
@@ -872,7 +916,13 @@ ur: {
   mnp_60day_note:"⏱ MNP انسینٹو <strong>60 دن</strong> بعد جمع ہوتا ہے (کم از کم 6 ماہ)۔",
   bd_title:"انسینٹو تفصیل",
   calc_lte_label:"≤ €6.99 بونس",calc_gt_label:"> €6.99 بونس",calc_gara_bonus:"گارا ایکسٹرا بوسٹ",calc_recharge_label:"خودکار ریچارج کیش بیک",
+  calc_sim_margin_label:"SIM مارجن (€5/SIM)",
   gara_not_met:"کم از کم 15 MNP پوری نہیں",
+  sim_margin_note:"<strong>ℹ SIM مارجن:</strong> مثالیں €5 کے کم از کم SIM مارجن کو مدنظر رکھ کر بنائی گئی ہیں؛ اصل مارجن علاقے اور شہر کے لحاظ سے مختلف ہو سکتا ہے۔",
+  mnp_note_tax_heading:"ٹیکس کوڈ + IMEI",
+  mnp_note_tax_text:"صرف منفرد صارفین (منفرد ٹیکس کوڈ) اور IMEI گارا انسینٹو اور MNP انسینٹو کے اہل ہیں۔",
+  mnp_note_renewal_heading:"رینیوول + استعمال",
+  mnp_note_renewal_text:"کم از کم 6 ماہ تک مسلسل استعمال اور رینیوول ضروری ہے ورنہ 50% تک مالُس اور دھوکہ دہی کے لیے مکمل واپسی لاگو۔",
   tag_terms:"شرائط و ضوابط",sec7_title:"پروگرام کی شرائط",terms_head:"شرائط و ضوابط",
   term1:"ہر مہینے کم از کم <strong>1 SIM مع FCA</strong>۔",term2:"پورٹ-ان: <strong>€5.99</strong> | نئی: <strong>€6.99</strong>۔ <strong>الگ الگ</strong> شمار۔",
   term3:"SIM کو <strong>FCA</strong> مکمل کرنا ضروری ہے۔",term4:"پورٹ-ان انسینٹو <strong>60 دن</strong> بعد۔",
@@ -932,7 +982,13 @@ bn: {
   mnp_60day_note:"⏱ MNP ইনসেন্টিভ <strong>60 দিন</strong> পরে (সর্বনিম্ন 6 মাস)।",
   bd_title:"ইনসেন্টিভ বিবরণ",
   calc_lte_label:"≤ €6.99 বোনাস",calc_gt_label:"> €6.99 বোনাস",calc_gara_bonus:"গারা এক্সট্রা বুস্ট",calc_recharge_label:"অটো রিচার্জ ক্যাশব্যাক",
+  calc_sim_margin_label:"SIM মার্জিন (€5/SIM)",
   gara_not_met:"ন্যূনতম 15 MNP পূরণ হয়নি",
+  sim_margin_note:"<strong>ℹ SIM মার্জিন:</strong> উদাহরণগুলো ন্যূনতম €5 SIM মার্জিন বিবেচনা করে গণনা করা হয়েছে; প্রকৃত মার্জিন অঞ্চল এবং রেফারেন্স শহরের উপর নির্ভর করে ভিন্ন হতে পারে।",
+  mnp_note_tax_heading:"ট্যাক্স কোড + IMEI",
+  mnp_note_tax_text:"শুধুমাত্র অনন্য গ্রাহক (অনন্য ট্যাক্স কোড) এবং IMEI গারা ইনসেন্টিভ ও MNP ইনসেন্টিভের জন্য যোগ্য।",
+  mnp_note_renewal_heading:"নবায়ন + ব্যবহার",
+  mnp_note_renewal_text:"ন্যূনতম 6 মাস ক্রমাগত ব্যবহার এবং নবায়ন প্রয়োজন অন্যথায় 50% পর্যন্ত মালুস প্রযোজ্য এবং জালিয়াতির জন্য সম্পূর্ণ ক্লব্যাক।",
   tag_terms:"শর্তাবলী",sec7_title:"প্রোগ্রামের শর্তাবলী",terms_head:"শর্তাবলী",
   term1:"প্রতি মাসে ন্যূনতম <strong>1 SIM সহ FCA</strong>।",term2:"পোর্ট-ইন: <strong>€5.99</strong> | নতুন: <strong>€6.99</strong>। <strong>আলাদাভাবে</strong> গণনা।",
   term3:"SIM অবশ্যই <strong>FCA</strong> সম্পন্ন করবে।",term4:"পোর্ট-ইন ইনসেন্টিভ <strong>60 দিন</strong> পরে।",
@@ -960,6 +1016,7 @@ var AVG_LTE_NEW = 6.99;
 var AVG_GT_NEW = 9.99;
 var AVG_LTE_MNP = 5.99;
 var AVG_GT_MNP = 9.99;
+var SIM_MARGIN = 5;
 
 // ============ DOM REFERENCES ============
 var $=function(id){return document.getElementById(id);};
@@ -1105,8 +1162,9 @@ function calcNew(){
   var totalGT = qtyGT * rateGT;
   var rechargeTotal = 0;
   if(withRecharge){ rechargeTotal = (qtyLTE * AVG_LTE_NEW) + (qtyGT * AVG_GT_NEW); }
+  var simMarginTotal = total * SIM_MARGIN;
 
-  var grand = totalLTE + totalGT + rechargeTotal;
+  var grand = totalLTE + totalGT + rechargeTotal + simMarginTotal;
 
   var html = '';
   if(qtyLTE>0){
@@ -1116,11 +1174,13 @@ function calcNew(){
     html += '<div class="result-row"><span>'+t('calc_gt_label')+' ('+qtyGT+' × €'+rateGT+') <span style="opacity:.5;font-size:12px;">'+t('tier_label')+' '+getTierLabel(total)+'</span></span><span class="r-val blue">'+fmt(totalGT)+'</span></div>';
   }
   if(withRecharge){
-    html += '<div class="result-row"><span>'+t('calc_recharge_label')+' <span style="opacity:.5;font-size:11px;">⚠ '+t('auto_recharge_note').substring(0,50)+'...</span></span><span class="r-val gold">≈'+fmt(rechargeTotal)+'</span></div>';
+    html += '<div class="result-row"><span>'+t('calc_recharge_label')+'</span><span class="r-val gold">'+fmt(rechargeTotal)+'</span></div>';
   }
+  // SIM Margin row
+  html += '<div class="result-row"><span>'+t('calc_sim_margin_label')+' ('+total+' × €'+SIM_MARGIN+')</span><span class="r-val" style="color:rgba(255,255,255,.7);">'+fmt(simMarginTotal)+'</span></div>';
 
   $('res-new-rows').innerHTML = html;
-  $('res-new-total').textContent = withRecharge ? '≈'+fmt(grand) : fmt(grand);
+  $('res-new-total').textContent = fmt(grand);
   $('res-new').classList.add('visible');
 
   // Show/hide recharge note
@@ -1167,7 +1227,8 @@ function calcMnp(){
   var stdGT = qtyGT * rateGT;
   var stdTotal = stdLTE + stdGT;
   var rechargeTotal = withRecharge ? (qtyLTE * AVG_LTE_MNP) + (qtyGT * AVG_GT_MNP) : 0;
-  var grand = stdTotal + garaTotal + rechargeTotal;
+  var simMarginTotal = totalMnp * SIM_MARGIN;
+  var grand = stdTotal + garaTotal + rechargeTotal + simMarginTotal;
 
   var html = '';
   if(qtyLTE>0){
@@ -1188,8 +1249,10 @@ function calcMnp(){
     html += '<div class="result-row"><span>'+t('calc_gara_bonus')+' — '+t('gara_none_entered')+'</span><span class="r-val dim">€0</span></div>';
   }
   if(withRecharge){
-    html += '<div class="result-row"><span>'+t('calc_recharge_label')+' <span style="opacity:.5;font-size:11px;">⚠ estimate</span></span><span class="r-val gold">≈'+fmt(rechargeTotal)+'</span></div>';
+    html += '<div class="result-row"><span>'+t('calc_recharge_label')+'</span><span class="r-val gold">'+fmt(rechargeTotal)+'</span></div>';
   }
+  // SIM Margin row
+  html += '<div class="result-row"><span>'+t('calc_sim_margin_label')+' ('+totalMnp+' × €'+SIM_MARGIN+')</span><span class="r-val" style="color:rgba(255,255,255,.7);">'+fmt(simMarginTotal)+'</span></div>';
 
   $('res-mnp-rows').innerHTML = html;
 
@@ -1200,10 +1263,11 @@ function calcMnp(){
   if(garaEligible && garaPremQty>0 && garaSum===totalMnp) bdHtml += '<div class="bd-item"><span>GARA Premium ('+garaPremQty+' × €40)</span><span class="bd-v gara">'+fmt(garaPremTotal)+'</span></div>';
   if(garaEligible && garaOthQty>0 && garaSum===totalMnp) bdHtml += '<div class="bd-item"><span>GARA Other ('+garaOthQty+' × €20)</span><span class="bd-v">'+fmt(garaOthTotal)+'</span></div>';
   if(!garaEligible) bdHtml += '<div class="bd-item"><span>'+t('calc_gara_bonus')+'</span><span class="bd-v" style="color:rgba(255,255,255,.3);">€0 — '+t('gara_not_met')+'</span></div>';
-  if(withRecharge) bdHtml += '<div class="bd-item"><span>'+t('calc_recharge_label')+' (estimate)</span><span class="bd-v gold">≈'+fmt(rechargeTotal)+'</span></div>';
+  if(withRecharge) bdHtml += '<div class="bd-item"><span>'+t('calc_recharge_label')+'</span><span class="bd-v gold">'+fmt(rechargeTotal)+'</span></div>';
+  bdHtml += '<div class="bd-item"><span>'+t('calc_sim_margin_label')+' ('+totalMnp+' × €'+SIM_MARGIN+')</span><span class="bd-v" style="color:rgba(255,255,255,.7);">'+fmt(simMarginTotal)+'</span></div>';
   $('bd-items').innerHTML = bdHtml;
 
-  $('res-mnp-total').textContent = withRecharge ? '≈'+fmt(grand) : fmt(grand);
+  $('res-mnp-total').textContent = fmt(grand);
   $('res-mnp').classList.add('visible');
 
   // Show/hide recharge note
