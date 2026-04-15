@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lycamobile – Normal Incentive Scheme | April 2026</title>
+<title>Lycamobile – Normal Incentive Scheme</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#21264E;--navy-light:#2d3470;--green:#08DC7D;--green-dark:#08a35e;--green-deeper:#067a47;--blue:#245BC1;--gold:#FFD54F;--gold-dark:#b8860b;--red:#dc2626;--cyan:#00D7FF;}
@@ -233,6 +233,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .mnp-note-item.note-renewal .note-heading{color:#fca5a5;}
 .sim-margin-note{padding:10px 14px;background:rgba(255,255,255,.04);border-left:3px solid rgba(255,255,255,.25);border-radius:0 6px 6px 0;font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin-top:12px;}
 .sim-margin-note strong{color:rgba(255,255,255,.7);}
+.margin-toggle-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:rgba(255,213,79,.06);border:1.5px solid rgba(255,213,79,.2);border-radius:8px;margin-bottom:14px;}
+.margin-toggle-bar .mtb-left{display:flex;flex-direction:column;gap:3px;}
+.margin-toggle-bar .mtb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);}
+.margin-toggle-bar .mtb-desc{font-size:11px;color:rgba(255,255,255,.5);line-height:1.4;}
+.margin-pill{display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:30px;overflow:hidden;flex-shrink:0;}
+.margin-pill button{padding:7px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;background:transparent;color:rgba(255,255,255,.4);}
+.margin-pill button.mp-active-yes{background:var(--gold);color:var(--navy);}
+.margin-pill button.mp-active-no{background:rgba(220,38,38,.25);color:#fca5a5;border:1px solid rgba(220,38,38,.3);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 body.rtl .term-item{border-left:none;border-right:3px solid transparent;}
 body.rtl .term-item.t-green{border-right-color:var(--green);}
@@ -278,12 +286,12 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
     <span class="logo-badge" data-i18n="partner_program">Partner Program</span>
   </div>
   <div class="header-right">
-    <span class="month-badge" data-i18n="month_badge">APR 2026 · 🥚 EASTER</span>
     <div class="lang-switcher">
       <button class="lang-btn active" id="btn-en">🇬🇧 EN</button>
       <button class="lang-btn" id="btn-it">🇮🇹 IT</button>
-      <button class="lang-btn" id="btn-ur">🇵🇰 UR</button>
+	  <button class="lang-btn" id="btn-ta">🇱🇰 TA</button>
       <button class="lang-btn" id="btn-bn">🇧🇩 BN</button>
+	  <button class="lang-btn" id="btn-ur">🇵🇰 UR</button>
     </div>
   </div>
 </header>
@@ -291,13 +299,13 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
 <div class="page-wrapper">
 
   <div class="hero">
-    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Normal Retailer Incentive Programme · April 2026</p>
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Normal Retailer Incentive Programme</p>
     <h1 class="hero-title">
       <span data-i18n="hero_line1">Normal</span><br>
       <span class="accent" data-i18n="hero_line2">Incentive</span><br>
       <span data-i18n="hero_line3">Scheme</span>
     </h1>
-    <p class="hero-subtitle" data-i18n="hero_sub">Maximise your earnings with every activation and port-in.<br>Your complete guide to the April 2026 incentive programme.</p>
+    <p class="hero-subtitle" data-i18n="hero_sub">Maximise your earnings with every activation and port-in.<br>Your complete guide to the incentive programme.</p>
     <div class="stat-row">
       <div class="stat-pill green"><div class="val">€38</div><div class="lbl" data-i18n="stat_max_mnp">Max MNP</div></div>
       <div class="stat-pill blue"><div class="val">€9</div><div class="lbl" data-i18n="stat_max_new">Max New Act.</div></div>
@@ -354,7 +362,7 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
     <h2 class="section-title" data-i18n="sec2_title">GARA Extra Boost</h2>
     <div class="gara-section">
       <div class="gara-head">
-        <p class="eyebrow" data-i18n="gara_eyebrow">🥚 Special Easter Bonus</p>
+        <p class="eyebrow" data-i18n="gara_eyebrow">⭐ Special Bonus</p>
         <h2 data-i18n="gara_title">GARA EXTRA BOOST</h2>
         <p style="color:var(--gold);font-size:13px;font-weight:600;margin-top:6px;" data-i18n="gara_for">FOR ALL MNP ACTIVATIONS</p>
         <div class="req-badge" data-i18n="gara_req">Minimum requirement: <span>15+ MNP</span> per month</div>
@@ -388,7 +396,7 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
     <div class="recharge-section">
       <div class="recharge-head">
         <div class="left">
-          <p class="eyebrow" data-i18n="recharge_eyebrow">🥚 Easter Extra Incentive</p>
+          <p class="eyebrow" data-i18n="recharge_eyebrow">⭐ Extra Incentive</p>
           <h2 data-i18n="recharge_title">AUTO RECHARGE</h2>
         </div>
         <div class="recharge-badge">
@@ -550,6 +558,18 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
           <strong>⚠</strong> <span data-i18n="auto_recharge_note">Auto Recharge amounts shown are estimates only. Actual cashback values may vary as real plan values can differ.</span>
         </div>
 
+        <!-- SIM MARGIN TOGGLE - NEW ACTIVATIONS -->
+        <div class="margin-toggle-bar">
+          <div class="mtb-left">
+            <span class="mtb-title" data-i18n="toggle_margin_title">SIM Margin (€5/SIM)</span>
+            <span class="mtb-desc" data-i18n="toggle_margin_desc">Include the €5 SIM margin in the total earnings calculation</span>
+          </div>
+          <div class="margin-pill" id="n-margin-pill">
+            <button id="n-margin-yes" class="mp-active-yes" onclick="setMarginNew(true)" data-i18n="toggle_margin_yes">With Margin</button>
+            <button id="n-margin-no" onclick="setMarginNew(false)" data-i18n="toggle_margin_no">Without</button>
+          </div>
+        </div>
+
         <button class="calc-btn" id="btn-calc-new" data-i18n="calc_btn">Calculate Earnings</button>
         <div class="results-box" id="res-new">
           <p class="results-title" data-i18n="res_title">EARNINGS BREAKDOWN</p>
@@ -648,6 +668,18 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
           <strong>⚠</strong> <span data-i18n="auto_recharge_note">Auto Recharge amounts shown are estimates only. Actual cashback values may vary as real plan values can differ.</span>
         </div>
 
+        <!-- SIM MARGIN TOGGLE - MNP -->
+        <div class="margin-toggle-bar">
+          <div class="mtb-left">
+            <span class="mtb-title" data-i18n="toggle_margin_title">SIM Margin (€5/SIM)</span>
+            <span class="mtb-desc" data-i18n="toggle_margin_desc">Include the €5 SIM margin in the total earnings calculation</span>
+          </div>
+          <div class="margin-pill" id="m-margin-pill">
+            <button id="m-margin-yes" class="mp-active-yes" onclick="setMarginMnp(true)" data-i18n="toggle_margin_yes">With Margin</button>
+            <button id="m-margin-no" onclick="setMarginMnp(false)" data-i18n="toggle_margin_no">Without</button>
+          </div>
+        </div>
+
         <div class="info-box" data-i18n="mnp_60day_note">⏱ MNP incentives are credited after <strong>60 days</strong>, subject to continuous use & renewal (minimum 6 months).</div>
         <button class="calc-btn" id="btn-calc-mnp" data-i18n="calc_btn">Calculate Earnings</button>
         <div class="results-box" id="res-mnp">
@@ -732,22 +764,22 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
 // ============================================================
 var T = {
 en: {
-  partner_program:"Partner Program",month_badge:"MAR 2026 · 🌸 SPRING",
-  hero_eyebrow:"Normal Retailer Incentive Programme · April 2026",hero_line1:"Normal",hero_line2:"Incentive",hero_line3:"Scheme",
-  hero_sub:"Maximise your earnings with every activation and port-in.<br>Your complete guide to the April 2026 incentive programme.",
+  partner_program:"Partner Program",
+  hero_eyebrow:"Normal Retailer Incentive Programme",hero_line1:"Normal",hero_line2:"Incentive",hero_line3:"Scheme",
+  hero_sub:"Maximise your earnings with every activation and port-in.<br>Your complete guide to the incentive programme.",
   stat_max_mnp:"Max MNP",stat_max_new:"Max New Act.",stat_gara:"GARA Boost",
   tag_compensation:"Compensation",sec1_title:"Activation Compensation",
   table_lte_head:"Plans ≤ €6.99",table_gt_head:"Plans > €6.99",max_mnp_label:"max MNP",
   th_type:"Type",th_from1:"From 1 <sup>(2)</sup>",th_from6:"From 6",th_from15:"From 15",th_from35:"From 35",
   new_act_label:"New Act.",plus_sim_margin:"+ SIM Margin →",
   fn1:"Min plan for port-in: €5.99 | New activations: €6.99.",fn2:"Thresholds calculated separately for MNP and new activations.",fn3:"Only eligible plans qualify. See dedicated section below.",
-  tag_gara:"GARA Bonus",sec2_title:"GARA Extra Boost",gara_eyebrow:"🌸 Special Spring Bonus",gara_title:"GARA EXTRA BOOST",
+  tag_gara:"GARA Bonus",sec2_title:"GARA Extra Boost",gara_eyebrow:"⭐ Special Bonus",gara_title:"GARA EXTRA BOOST",
   gara_for:"FOR ALL MNP ACTIVATIONS",gara_req:"Minimum requirement: <span>15+ MNP</span> per month",
   per_mnp:"per MNP",from_ops:"From operators",other_ops:"Other MNO<br>& MVNO",
   gara_cond_title:"GARA Conditions",gara_c1:"Valid port-in offer + completed port-in + FCA within the same month.",
   gara_c2:"Only unique customers (unique tax code) + IMEI verification.",gara_c3:"Incentives credited after 60 days, requiring continuous use and renewal (min 6 months).",
   gara_c4:"Activations violating terms are not eligible for GARA incentive.",
-  tag_recharge:"Auto Recharge",sec3_title:"Automatic Recharge Incentive",recharge_eyebrow:"🌸 Spring Extra Incentive",recharge_title:"AUTO RECHARGE",
+  tag_recharge:"Auto Recharge",sec3_title:"Automatic Recharge Incentive",recharge_eyebrow:"⭐ Extra Incentive",recharge_title:"AUTO RECHARGE",
   recharge_badge_label:"Plan value in",recharge_badge_val:"Cashback",
   step1:"Activate the plan via <strong>CPOS</strong>",step2:"Select <strong>Credit/Debit Card</strong>",step3:"Scan the <strong>QR Code</strong>",
   recharge_note_label:"Note:",recharge_note:"POS activations only. Not valid for APP/ONLINE. First plan per MSISDN only.",
@@ -765,6 +797,7 @@ en: {
   lbl_mnp_lte_hint:"Port in all 5.99 · 5G Port in 599 (€5.99)",lbl_mnp_gt_hint:"Port in 7.99, 9.99 · 5G 150/200/250 · Globe 5G (€7.99–€14.99)",
   total_activations:"Total Activations:",total_port_ins:"Total Port-Ins:",tier_label:"Tier:",
   toggle_recharge:"Include Auto Recharge Cashback",
+  toggle_margin_title:"SIM Margin (€5/SIM)",toggle_margin_desc:"Include the €5 SIM margin in total earnings",toggle_margin_yes:"With Margin",toggle_margin_no:"Without",
   calc_btn:"Calculate Earnings",res_title:"EARNINGS BREAKDOWN",total_earnings:"Total Earnings",
   gara_op_title:"GARA · Source Operator Breakdown",
   gara_op_instruction:"Distribute your total MNP activations between Premium and Other operators. The sum must equal your total MNP count.",
@@ -800,22 +833,22 @@ en: {
   footer_dist:"Authorised Distributor",portal_link:"Retailer Portal",all_rights:"All rights reserved."
 },
 it: {
-  partner_program:"Partner Program",month_badge:"MAR 2026 · 🌸 PRIMAVERA",
-  hero_eyebrow:"Programma Incentivi Rivenditori Normale · Marzo 2026",hero_line1:"Schema",hero_line2:"Incentivi",hero_line3:"Normale",
-  hero_sub:"Massimizza i tuoi guadagni con ogni attivazione e portabilità.<br>La tua guida completa al programma incentivi di Marzo 2026.",
+  partner_program:"Partner Program",
+  hero_eyebrow:"Programma Incentivi Rivenditori Normale",hero_line1:"Schema",hero_line2:"Incentivi",hero_line3:"Normale",
+  hero_sub:"Massimizza i tuoi guadagni con ogni attivazione e portabilità.<br>La tua guida completa al programma incentivi.",
   stat_max_mnp:"Max MNP",stat_max_new:"Max Nuove Att.",stat_gara:"GARA Boost",
   tag_compensation:"Compensi",sec1_title:"Compensi per Attivazioni",
   table_lte_head:"Offerta ≤ €6,99",table_gt_head:"Offerta > €6,99",max_mnp_label:"max MNP",
   th_type:"Tipo",th_from1:"Da 1 <sup>(2)</sup>",th_from6:"Da 6",th_from15:"Da 15",th_from35:"Da 35",
   new_act_label:"Nuove Att.",plus_sim_margin:"+ Margine SIM →",
   fn1:"Piano minimo port-in: €5,99 | Nuove acquisizioni: €6,99.",fn2:"Soglie calcolate separatamente per MNP e nuove attivazioni.",fn3:"Solo piani idonei. Vedi sezione dedicata sotto.",
-  tag_gara:"Bonus GARA",sec2_title:"GARA Extra Boost",gara_eyebrow:"🌸 Bonus Speciale Primavera",gara_title:"GARA EXTRA BOOST",
+  tag_gara:"Bonus GARA",sec2_title:"GARA Extra Boost",gara_eyebrow:"⭐ Bonus Speciale",gara_title:"GARA EXTRA BOOST",
   gara_for:"PER TUTTI I MNP",gara_req:"Requisito minimo: <span>15+ MNP</span> al mese",
   per_mnp:"per MNP",from_ops:"Da operatori",other_ops:"Altri MNO<br>e MVNO",
   gara_cond_title:"Condizioni GARA",gara_c1:"Offerta port-in valida + port-in completato + FCA nello stesso mese.",
   gara_c2:"Solo clienti unici (CF univoco) + verifica IMEI.",gara_c3:"Incentivi dopo 60 giorni e richiesto uso e rinnovo continuo (min 6 mesi).",
   gara_c4:"Attivazioni che violano i termini non idonee per incentivo GARA.",
-  tag_recharge:"Ricarica Automatica",sec3_title:"Incentivo Ricarica Automatica",recharge_eyebrow:"🌸 Incentivo Extra Primavera",recharge_title:"RICARICA AUTOMATICA",
+  tag_recharge:"Ricarica Automatica",sec3_title:"Incentivo Ricarica Automatica",recharge_eyebrow:"⭐ Incentivo Extra",recharge_title:"RICARICA AUTOMATICA",
   recharge_badge_label:"Valore del piano in",recharge_badge_val:"Cashback",
   step1:"Attiva il piano tramite <strong>CPOS</strong>",step2:"Seleziona <strong>Carta di Credito/Debito</strong>",step3:"Scansiona il <strong>codice QR</strong>",
   recharge_note_label:"Nota:",recharge_note:"Solo attivazioni tramite POS. Non valido per APP/ONLINE. Solo primo piano per MSISDN.",
@@ -833,6 +866,7 @@ it: {
   lbl_mnp_lte_hint:"Port in all 5.99 · 5G Port in 599 (€5,99)",lbl_mnp_gt_hint:"Port in 7.99, 9.99 · 5G 150/200/250 · Globe 5G (€7,99–€14,99)",
   total_activations:"Totale Attivazioni:",total_port_ins:"Totale Port-In:",tier_label:"Fascia:",
   toggle_recharge:"Includi Cashback Ricarica Automatica",
+  toggle_margin_title:"Margine SIM (€5/SIM)",toggle_margin_desc:"Includi il margine SIM di €5 nel totale guadagni",toggle_margin_yes:"Con Margine",toggle_margin_no:"Senza",
   calc_btn:"Calcola Guadagni",res_title:"RIEPILOGO GUADAGNI",total_earnings:"Guadagni Totali",
   gara_op_title:"GARA · Dettaglio Operatori di Origine",
   gara_op_instruction:"Distribuisci le attivazioni MNP totali tra operatori Premium e Altri. La somma deve essere uguale al totale MNP.",
@@ -868,22 +902,22 @@ it: {
   footer_dist:"Distributore Autorizzato",portal_link:"Portale Rivenditore",all_rights:"Tutti i diritti riservati."
 },
 ur: {
-  partner_program:"پارٹنر پروگرام",month_badge:"مارچ 2026 · 🌸 بہار",
-  hero_eyebrow:"ریٹیلر نارمل انسینٹو پروگرام · مارچ 2026",hero_line1:"نارمل",hero_line2:"انسینٹو",hero_line3:"اسکیم",
-  hero_sub:"ہر ایکٹیویشن اور پورٹ-ان سے اپنی کمائی بڑھائیں۔<br>مارچ 2026 انسینٹو پروگرام کی مکمل گائیڈ۔",
+  partner_program:"پارٹنر پروگرام",
+  hero_eyebrow:"ریٹیلر نارمل انسینٹو پروگرام",hero_line1:"نارمل",hero_line2:"انسینٹو",hero_line3:"اسکیم",
+  hero_sub:"ہر ایکٹیویشن اور پورٹ-ان سے اپنی کمائی بڑھائیں۔<br>انسینٹو پروگرام کی مکمل گائیڈ۔",
   stat_max_mnp:"زیادہ سے زیادہ MNP",stat_max_new:"زیادہ سے زیادہ نئی",stat_gara:"گارا بوسٹ",
   tag_compensation:"معاوضے",sec1_title:"ایکٹیویشن معاوضے",
   table_lte_head:"پلان ≤ €6.99",table_gt_head:"پلان > €6.99",max_mnp_label:"زیادہ سے زیادہ MNP",
   th_type:"قسم",th_from1:"1 سے <sup>(2)</sup>",th_from6:"6 سے",th_from15:"15 سے",th_from35:"35 سے",
   new_act_label:"نئی ایکٹ.",plus_sim_margin:"+ SIM مارجن →",
   fn1:"پورٹ-ان کے لیے کم از کم پلان: €5.99 | نئی ایکٹیویشنز: €6.99۔",fn2:"حدود MNP اور نئی ایکٹیویشنز کے لیے الگ الگ شمار۔",fn3:"صرف اہل پلان۔ نیچے دیکھیں۔",
-  tag_gara:"گارا بونس",sec2_title:"گارا ایکسٹرا بوسٹ",gara_eyebrow:"🌸 خصوصی بہار بونس",gara_title:"گارا ایکسٹرا بوسٹ",
+  tag_gara:"گارا بونس",sec2_title:"گارا ایکسٹرا بوسٹ",gara_eyebrow:"⭐ خصوصی بونس",gara_title:"گارا ایکسٹرا بوسٹ",
   gara_for:"تمام MNP ایکٹیویشنز کے لیے",gara_req:"کم از کم ضرورت: <span>15+ MNP</span> ماہانہ",
   per_mnp:"فی MNP",from_ops:"آپریٹرز سے",other_ops:"دیگر MNO<br>اور MVNO",
   gara_cond_title:"گارا شرائط",gara_c1:"درست پورٹ-ان آفر + مکمل پورٹ-ان + FCA اسی مہینے میں۔",
   gara_c2:"صرف منفرد صارفین + IMEI تصدیق۔",gara_c3:"انسینٹوز 60 دن بعد (کم از کم 6 ماہ)۔",
   gara_c4:"شرائط کی خلاف ورزی والی ایکٹیویشنز اہل نہیں۔",
-  tag_recharge:"خودکار ریچارج",sec3_title:"خودکار ریچارج انسینٹو",recharge_eyebrow:"🌸 بہار اضافی انسینٹو",recharge_title:"خودکار ریچارج",
+  tag_recharge:"خودکار ریچارج",sec3_title:"خودکار ریچارج انسینٹو",recharge_eyebrow:"⭐ اضافی انسینٹو",recharge_title:"خودکار ریچارج",
   recharge_badge_label:"پلان کی قیمت بطور",recharge_badge_val:"کیش بیک",
   step1:"<strong>CPOS</strong> کے ذریعے پلان فعال کریں",step2:"<strong>کریڈٹ/ڈیبٹ کارڈ</strong> منتخب کریں",step3:"<strong>QR کوڈ</strong> اسکین کریں",
   recharge_note_label:"نوٹ:",recharge_note:"صرف POS۔ APP/ONLINE کے لیے نہیں۔ فی MSISDN صرف پہلا پلان۔",
@@ -901,6 +935,7 @@ ur: {
   lbl_mnp_lte_hint:"Port in all 5.99 · 5G Port in 599 (€5.99)",lbl_mnp_gt_hint:"Port in 7.99, 9.99 · 5G 150/200/250 · Globe 5G (€7.99–€14.99)",
   total_activations:"کل ایکٹیویشنز:",total_port_ins:"کل پورٹ-ان:",tier_label:"ٹیئر:",
   toggle_recharge:"خودکار ریچارج کیش بیک شامل کریں",
+  toggle_margin_title:"SIM مارجن (€5/SIM)",toggle_margin_desc:"کل کمائی میں €5 SIM مارجن شامل کریں",toggle_margin_yes:"مارجن کے ساتھ",toggle_margin_no:"بغیر",
   calc_btn:"کمائی حساب کریں",res_title:"آمدنی کی تفصیل",total_earnings:"کل کمائی",
   gara_op_title:"گارا · سورس آپریٹر تفصیل",
   gara_op_instruction:"اپنی کل MNP ایکٹیویشنز پریمیم اور دیگر آپریٹرز میں تقسیم کریں۔ مجموعہ کل MNP کے برابر ہونا چاہیے۔",
@@ -934,22 +969,22 @@ ur: {
   footer_dist:"مجاز تقسیم کار",portal_link:"ریٹیلر پورٹل",all_rights:"تمام حقوق محفوظ ہیں۔"
 },
 bn: {
-  partner_program:"পার্টনার প্রোগ্রাম",month_badge:"মার্চ 2026 · 🌸 বসন্ত",
-  hero_eyebrow:"রিটেইলার নরমাল ইনসেন্টিভ প্রোগ্রাম · মার্চ 2026",hero_line1:"নরমাল",hero_line2:"ইনসেন্টিভ",hero_line3:"স্কিম",
-  hero_sub:"প্রতিটি অ্যাক্টিভেশন ও পোর্ট-ইনে আয় করুন।<br>মার্চ 2026 ইনসেন্টিভ প্রোগ্রামের সম্পূর্ণ গাইড।",
+  partner_program:"পার্টনার প্রোগ্রাম",
+  hero_eyebrow:"রিটেইলার নরমাল ইনসেন্টিভ প্রোগ্রাম",hero_line1:"নরমাল",hero_line2:"ইনসেন্টিভ",hero_line3:"স্কিম",
+  hero_sub:"প্রতিটি অ্যাক্টিভেশন ও পোর্ট-ইনে আয় করুন।<br>ইনসেন্টিভ প্রোগ্রামের সম্পূর্ণ গাইড।",
   stat_max_mnp:"সর্বোচ্চ MNP",stat_max_new:"সর্বোচ্চ নতুন",stat_gara:"গারা বুস্ট",
   tag_compensation:"ক্ষতিপূরণ",sec1_title:"অ্যাক্টিভেশন ক্ষতিপূরণ",
   table_lte_head:"প্ল্যান ≤ €6.99",table_gt_head:"প্ল্যান > €6.99",max_mnp_label:"সর্বোচ্চ MNP",
   th_type:"ধরন",th_from1:"১ থেকে <sup>(২)</sup>",th_from6:"৬ থেকে",th_from15:"১৫ থেকে",th_from35:"৩৫ থেকে",
   new_act_label:"নতুন অ্যাক্ট.",plus_sim_margin:"+ SIM মার্জিন →",
   fn1:"পোর্ট-ইনের জন্য ন্যূনতম: €5.99 | নতুন: €6.99।",fn2:"MNP এবং নতুন অ্যাক্টিভেশন আলাদাভাবে গণনা।",fn3:"শুধুমাত্র যোগ্য প্ল্যান।",
-  tag_gara:"গারা বোনাস",sec2_title:"গারা এক্সট্রা বুস্ট",gara_eyebrow:"🌸 বিশেষ বসন্ত বোনাস",gara_title:"গারা এক্সট্রা বুস্ট",
+  tag_gara:"গারা বোনাস",sec2_title:"গারা এক্সট্রা বুস্ট",gara_eyebrow:"⭐ বিশেষ বোনাস",gara_title:"গারা এক্সট্রা বুস্ট",
   gara_for:"সকল MNP অ্যাক্টিভেশনের জন্য",gara_req:"ন্যূনতম: <span>15+ MNP</span> প্রতি মাসে",
   per_mnp:"প্রতি MNP",from_ops:"অপারেটর থেকে",other_ops:"অন্যান্য MNO<br>এবং MVNO",
   gara_cond_title:"গারা শর্তাবলী",gara_c1:"বৈধ অফার + সম্পূর্ণ পোর্ট-ইন + FCA একই মাসে।",
   gara_c2:"শুধুমাত্র অনন্য গ্রাহক + IMEI যাচাই।",gara_c3:"ইনসেন্টিভ 60 দিন পরে (মিন 6 মাস)।",
   gara_c4:"শর্ত লঙ্ঘনকারী অ্যাক্টিভেশন যোগ্য নয়।",
-  tag_recharge:"অটো রিচার্জ",sec3_title:"স্বয়ংক্রিয় রিচার্জ ইনসেন্টিভ",recharge_eyebrow:"🌸 বসন্ত অতিরিক্ত ইনসেন্টিভ",recharge_title:"অটো রিচার্জ",
+  tag_recharge:"অটো রিচার্জ",sec3_title:"স্বয়ংক্রিয় রিচার্জ ইনসেন্টিভ",recharge_eyebrow:"⭐ অতিরিক্ত ইনসেন্টিভ",recharge_title:"অটো রিচার্জ",
   recharge_badge_label:"প্ল্যান মূল্য হিসাবে",recharge_badge_val:"ক্যাশব্যাক",
   step1:"<strong>CPOS</strong> এর মাধ্যমে সক্রিয় করুন",step2:"<strong>ক্রেডিট/ডেবিট কার্ড</strong> নির্বাচন",step3:"<strong>QR কোড</strong> স্ক্যান",
   recharge_note_label:"দ্রষ্টব্য:",recharge_note:"শুধুমাত্র POS। APP/ONLINE নয়। প্রতি MSISDN প্রথম প্ল্যান।",
@@ -967,6 +1002,7 @@ bn: {
   lbl_mnp_lte_hint:"Port in all 5.99 · 5G Port in 599 (€5.99)",lbl_mnp_gt_hint:"Port in 7.99, 9.99 · 5G 150/200/250 · Globe 5G (€7.99–€14.99)",
   total_activations:"মোট অ্যাক্টিভেশন:",total_port_ins:"মোট পোর্ট-ইন:",tier_label:"টিয়ার:",
   toggle_recharge:"অটো রিচার্জ ক্যাশব্যাক অন্তর্ভুক্ত করুন",
+  toggle_margin_title:"SIM মার্জিন (€5/SIM)",toggle_margin_desc:"মোট উপার্জনে €5 SIM মার্জিন অন্তর্ভুক্ত করুন",toggle_margin_yes:"মার্জিন সহ",toggle_margin_no:"ছাড়া",
   calc_btn:"উপার্জন গণনা করুন",res_title:"উপার্জনের বিবরণ",total_earnings:"মোট উপার্জন",
   gara_op_title:"গারা · সোর্স অপারেটর বিবরণ",
   gara_op_instruction:"আপনার মোট MNP অ্যাক্টিভেশন প্রিমিয়াম এবং অন্যান্য অপারেটরে ভাগ করুন। যোগফল মোট MNP-র সমান হতে হবে।",
@@ -998,14 +1034,95 @@ bn: {
   term8:"নবায়ন &lt;65% হলে <strong>50%</strong> মালুস।",
   disc_title:"দায়বদ্ধতার অস্বীকৃতি",disclaimer:"Lycamobile তার অনুমোদিত রিটেইলারদের পর্যবেক্ষণ করে।",
   footer_dist:"অনুমোদিত পরিবেশক",portal_link:"রিটেইলার পোর্টাল",all_rights:"সমস্ত অধিকার সংরক্ষিত।"
+},
+ta: {
+  partner_program:"பார்ட்னர் திட்டம்",
+  hero_eyebrow:"சில்லறை வியாபாரி இயல்பான ஊக்கத் திட்டம்",hero_line1:"இயல்பான",hero_line2:"ஊக்கத்",hero_line3:"திட்டம்",
+  hero_sub:"ஒவ்வொரு செயல்படுத்தல் மற்றும் போர்ட்-இன் மூலம் உங்கள் வருவாயை அதிகரிக்கவும்.<br>ஊக்கத் திட்டத்திற்கான உங்கள் முழுமையான வழிகாட்டி.",
+  stat_max_mnp:"அதிகபட்ச MNP",stat_max_new:"அதிகபட்ச புதிய",stat_gara:"கரா மேம்படுத்தல்",
+  tag_compensation:"இழப்பீடு",sec1_title:"செயல்படுத்தல் இழப்பீடு",
+  table_lte_head:"திட்டங்கள் ≤ €6.99",table_gt_head:"திட்டங்கள் > €6.99",max_mnp_label:"அதிகபட்ச MNP",
+  th_type:"வகை",th_from1:"1 இலிருந்து <sup>(2)</sup>",th_from6:"6 இலிருந்து",th_from15:"15 இலிருந்து",th_from35:"35 இலிருந்து",
+  new_act_label:"புதிய செய.",plus_sim_margin:"+ SIM மார்ஜின் →",
+  fn1:"போர்ட்-இனுக்கான குறைந்தபட்ச திட்டம்: €5.99 | புதிய செயல்படுத்தல்கள்: €6.99.",fn2:"MNP மற்றும் புதிய செயல்படுத்தல்களுக்கு தனித்தனியாக கணக்கிடப்படும்.",fn3:"தகுதியுள்ள திட்டங்கள் மட்டுமே. கீழே பாருங்கள்.",
+  tag_gara:"கரா போனஸ்",sec2_title:"கரா கூடுதல் மேம்படுத்தல்",gara_eyebrow:"⭐ சிறப்பு போனஸ்",gara_title:"கரா கூடுதல் மேம்படுத்தல்",
+  gara_for:"அனைத்து MNP செயல்படுத்தல்களுக்கும்",gara_req:"குறைந்தபட்ச தேவை: <span>15+ MNP</span> மாதந்தோறும்",
+  per_mnp:"ஒரு MNPக்கு",from_ops:"ஆபரேட்டர்களிடமிருந்து",other_ops:"மற்ற MNO<br>மற்றும் MVNO",
+  gara_cond_title:"கரா நிபந்தனைகள்",gara_c1:"செல்லுபடியாகும் போர்ட்-இன் சலுகை + முடிந்த போர்ட்-இன் + FCA அதே மாதத்தில்.",
+  gara_c2:"தனித்துவமான வாடிக்கையாளர்கள் மட்டுமே (தனித்துவமான வரி குறியீடு) + IMEI சரிபார்ப்பு.",gara_c3:"60 நாட்களுக்குப் பிறகு ஊக்கங்கள் (குறைந்தது 6 மாதங்கள்).",
+  gara_c4:"விதிமுறைகளை மீறும் செயல்படுத்தல்கள் தகுதியற்றவை.",
+  tag_recharge:"தானியங்கி ரீசார்ஜ்",sec3_title:"தானியங்கி ரீசார்ஜ் ஊக்கம்",recharge_eyebrow:"⭐ கூடுதல் ஊக்கம்",recharge_title:"தானியங்கி ரீசார்ஜ்",
+  recharge_badge_label:"திட்ட மதிப்பு",recharge_badge_val:"கேஷ்பேக்",
+  step1:"<strong>CPOS</strong> மூலம் திட்டத்தை செயல்படுத்துங்கள்",step2:"<strong>கிரெடிட்/டெபிட் கார்டை</strong> தேர்ந்தெடுங்கள்",step3:"<strong>QR குறியீட்டை</strong> ஸ்கேன் செய்யுங்கள்",
+  recharge_note_label:"குறிப்பு:",recharge_note:"POS செயல்படுத்தல்கள் மட்டுமே. APP/ONLINE க்கு செல்லாது. ஒரு MSISDN க்கு முதல் திட்டம் மட்டுமே.",
+  tag_reduced:"குறைக்கப்பட்ட புதுப்பிப்பு",sec4_title:"குறைக்கப்பட்ட புதுப்பிப்பு நிபந்தனைகள்",reduced_head:"புதுப்பிப்பு விகிதம் குறைவாக இருக்கும்போது",
+  reduced_desc:"தேசிய திட்ட புதுப்பிப்பு (T1) <strong style='color:#fff'>&lt;30%</strong> அல்லது போர்ட்-இன் புதுப்பிப்பு <strong style='color:#fff'>&lt;50%</strong> ஆனால்:",
+  th_plan_type:"திட்ட வகை",
+  tag_plans:"தகுதியுள்ள திட்டங்கள்",sec5_title:"ஊக்கத்திற்கான தகுதியுள்ள திட்டங்கள்",ptab_mnp:"→ MNP போர்ட்-இன் திட்டங்கள்",ptab_new:"→ புதிய செயல்படுத்தல் திட்டங்கள்",
+  plans_national:"தேசிய",plans_5g_national:"5G தேசிய",plans_international:"சர்வதேச",th_plan:"திட்டம்",th_price:"விலை",
+  tag_calc:"ஊடாடும் கணிப்பான்",sec6_title:"ஊக்கக் கணிப்பான்",calc_tab_new:"புதிய செயல்படுத்தல்கள்",calc_tab_mnp:"MNP போர்ட்-இன்",
+  calc_new_desc:"ஒவ்வொரு திட்ட அடுக்கிற்கும் புதிய செயல்படுத்தல்களின் எண்ணிக்கையை உள்ளிடுங்கள். அடுக்கு மொத்த கூட்டு மூலம் தீர்மானிக்கப்படுகிறது.",
+  calc_mnp_desc:"ஒவ்வொரு திட்ட அடுக்கிற்கும் MNP போர்ட்-இன்களின் எண்ணிக்கையை உள்ளிடுங்கள். அடுக்கு மொத்த MNP எண்ணிக்கையை அடிப்படையாகக் கொண்டது. கரா 15+ தேவை.",
+  lbl_new_lte:"திட்டங்கள் ≤ €6.99",lbl_new_gt:"திட்டங்கள் > €6.99",lbl_qty_lte:"அளவு (≤ €6.99)",lbl_qty_gt:"அளவு (> €6.99)",
+  lbl_new_lte_hint:"Italy Pink (€6.99)",lbl_new_gt_hint:"Italy Silver, Gold, White, Red · Lyca 5G · Globe 5G (€7.99–€14.99)",
+  lbl_mnp_lte:"MNP திட்டங்கள் ≤ €6.99",lbl_mnp_gt:"MNP திட்டங்கள் > €6.99",
+  lbl_mnp_lte_hint:"Port in all 5.99 · 5G Port in 599 (€5.99)",lbl_mnp_gt_hint:"Port in 7.99, 9.99 · 5G 150/200/250 · Globe 5G (€7.99–€14.99)",
+  total_activations:"மொத்த செயல்படுத்தல்கள்:",total_port_ins:"மொத்த போர்ட்-இன்கள்:",tier_label:"அடுக்கு:",
+  toggle_recharge:"தானியங்கி ரீசார்ஜ் கேஷ்பேக் சேர்க்கவும்",
+  toggle_margin_title:"SIM மார்ஜின் (€5/SIM)",toggle_margin_desc:"மொத்த வருவாயில் €5 SIM மார்ஜினை சேர்க்கவும்",toggle_margin_yes:"மார்ஜினுடன்",toggle_margin_no:"இல்லாமல்",
+  calc_btn:"வருவாயை கணக்கிடுங்கள்",res_title:"வருவாய் விவரம்",total_earnings:"மொத்த வருவாய்",
+  gara_op_title:"கரா · மூல ஆபரேட்டர் விவரம்",
+  gara_op_instruction:"உங்கள் மொத்த MNP செயல்படுத்தல்களை பிரீமியம் மற்றும் மற்ற ஆபரேட்டர்களிடையே பிரிக்கவும். கூட்டுத்தொகை மொத்த MNP க்கு சமமாக இருக்க வேண்டும்.",
+  lbl_gara_premium:"பிரீமியம் ஆபரேட்டர்கள் (+€40/MNP)",lbl_gara_premium_ops:"Iliad · Fastweb · CoopVoce · PosteMobile",
+  lbl_gara_other:"மற்ற MNO / MVNO (+€20/MNP)",lbl_gara_other_ops:"மற்ற அனைத்து MNO மற்றும் MVNO ஆபரேட்டர்கள்",
+  calc_gara_premium_label:"கரா பிரீமியம் (+€40)",calc_gara_other_label:"கரா மற்றவை (+€20)",
+  gara_none_entered:"கரா ஆபரேட்டர்கள் உள்ளிடப்படவில்லை",
+  gara_unlocked:"கரா திறக்கப்பட்டது",
+  gara_qty_match:"ஆபரேட்டர் எண்ணிக்கை மொத்த MNP செயல்படுத்தல்களுடன் பொருந்துகிறது.",
+  gara_qty_error:"⚠ கரா ஆபரேட்டர் எண்ணிக்கை ({garaSum}) ≠ மொத்த MNP ({totalMnp}). சமமாக இருக்க வேண்டும். பிரீமியம் மற்றும் மற்ற அளவுகளை சரிசெய்யுங்கள்.",
+  auto_recharge_note:"தானியங்கி ரீசார்ஜ் தொகைகள் மதிப்பீடுகள் மட்டுமே. உண்மையான கேஷ்பேக் மாறுபடலாம்.",
+  gara_calc_blocked:"⚠ கணக்கிட முடியாது: கரா ஆபரேட்டர் எண்ணிக்கை ({garaSum}) மொத்த MNP ({totalMnp}) உடன் பொருந்தவில்லை. மேலே சரிசெய்யுங்கள்.",
+  mnp_60day_note:"⏱ MNP ஊக்கங்கள் <strong>60 நாட்களுக்குப்</strong> பிறகு வரவு வைக்கப்படும் (குறைந்தது 6 மாதங்கள்).",
+  bd_title:"ஊக்க விவரம்",
+  calc_lte_label:"≤ €6.99 போனஸ்",calc_gt_label:"> €6.99 போனஸ்",calc_gara_bonus:"கரா கூடுதல் மேம்படுத்தல்",calc_recharge_label:"தானியங்கி ரீசார்ஜ் கேஷ்பேக்",
+  calc_sim_margin_label:"SIM மார்ஜின் (€5/SIM)",
+  gara_not_met:"குறைந்தது 15 MNP எட்டவில்லை",
+  sim_margin_note:"<strong>ℹ SIM மார்ஜின்:</strong> எடுத்துக்காட்டுகள் குறைந்தபட்ச €5 SIM மார்ஜினை கருத்தில் கொண்டு கணக்கிடப்பட்டுள்ளன; உண்மையான மார்ஜின் பகுதி மற்றும் நகரத்தைப் பொறுத்து மாறுபடலாம்.",
+  mnp_note_tax_heading:"வரி குறியீடு + IMEI",
+  mnp_note_tax_text:"தனித்துவமான வாடிக்கையாளர்கள் (தனித்துவமான வரி குறியீடு) மற்றும் IMEI மட்டுமே கரா ஊக்கம் மற்றும் MNP ஊக்கத்திற்கு தகுதியானவர்கள்.",
+  mnp_note_renewal_heading:"புதுப்பிப்பு + பயன்பாடு",
+  mnp_note_renewal_text:"குறைந்தது 6 மாதங்களுக்கு தொடர்ச்சியான பயன்பாடு மற்றும் புதுப்பிப்பு தேவை, இல்லையேல் 50% வரை மாலஸ் மற்றும் மோசடிக்கு முழு திரும்ப பெறுதல்.",
+  tag_terms:"விதிமுறைகள்",sec7_title:"திட்ட விதிமுறைகள்",terms_head:"விதிமுறைகள்",
+  term1:"ஒவ்வொரு மாதமும் குறைந்தது <strong>1 SIM உடன் FCA</strong>.",term2:"போர்ட்-இன்: <strong>€5.99</strong> | புதிய: <strong>€6.99</strong>. <strong>தனித்தனியாக</strong> கணக்கிடப்படும்.",
+  term3:"SIM <strong>FCA</strong> முடிக்க வேண்டும். செயல்படுத்தல்கள் <strong>சரியானதாகவும் இணக்கமானதாகவும்</strong> இருக்க வேண்டும்.",term4:"போர்ட்-இன் ஊக்கங்கள் <strong>60 நாட்களுக்குப்</strong> பிறகு.",
+  term5:"≥10 செயல்படுத்தல்களில் >5% பயன்பாடு இல்லாமல்: <strong>கழித்தல்</strong>. துஷ்பிரயோகம் ஒவ்வொன்றுக்கும் <strong>€10</strong>.",
+  term6:"POS வழியாக NON-HP SIM க்கு <strong>+€5</strong> (அதிகபட்சம் €100).",
+  term7:"<strong>போர்ட்-அவுட் கழிவுகள்:</strong> FCA இல்லாமல் போர்ட்-அவுட். 60 நாட்களில் போர்ட்-இன் + அவுட் = தவறானது.",
+  term8:"புதுப்பிப்பு &lt;65% ஆனால் <strong>50%</strong> மாலஸ்.",
+  disc_title:"மறுப்பு",disclaimer:"Lycamobile தனது அங்கீகரிக்கப்பட்ட சில்லறை விற்பனையாளர்களின் செயல்பாடுகளை தவறாமல் கண்காணிக்கிறது.",
+  footer_dist:"அங்கீகரிக்கப்பட்ட விநியோகஸ்தர்",portal_link:"சில்லறை போர்டல்",all_rights:"அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."
 }
 };
 
 var curLang = 'en';
+var newMarginOn = true;
+var mnpMarginOn = true;
+
 function t(k){ return (T[curLang]&&T[curLang][k]) || T.en[k] || k; }
 function fmt(n){ var s=n.toFixed(2); return '€'+(s.slice(-3)==='.00'?s.slice(0,-3):s); }
 function getTierKey(total){ return total>=35?35:total>=15?15:total>=6?6:1; }
 function getTierLabel(total){ return total>=35?'35+':total>=15?'15–34':total>=6?'6–14':'1–5'; }
+
+function setMarginNew(on){
+  newMarginOn = on;
+  $('n-margin-yes').className = on ? 'mp-active-yes' : '';
+  $('n-margin-no').className  = on ? '' : 'mp-active-no';
+}
+function setMarginMnp(on){
+  mnpMarginOn = on;
+  $('m-margin-yes').className = on ? 'mp-active-yes' : '';
+  $('m-margin-no').className  = on ? '' : 'mp-active-no';
+}
 
 // ============ INCENTIVE RATE TABLES ============
 var newRatesLTE = {1:3,6:5,15:6,35:7};
@@ -1024,7 +1141,7 @@ var $=function(id){return document.getElementById(id);};
 // ============ LANGUAGE SWITCHER ============
 function setLang(lang){
   curLang=lang;
-  ['en','it','ur','bn'].forEach(function(l){
+  ['en','it','ur','bn','ta'].forEach(function(l){
     $('btn-'+l).classList.toggle('active',l===lang);
   });
   document.documentElement.lang=lang;
@@ -1126,15 +1243,12 @@ function validateGaraQty(){
   }
 
   if(garaSum === 0){
-    // No input yet — no message
     matchMsg.classList.remove('visible');
     errorMsg.classList.remove('visible');
   } else if(garaSum === totalMnp){
-    // Perfect match
     matchMsg.classList.add('visible');
     errorMsg.classList.remove('visible');
   } else {
-    // Mismatch — show error (whether too high OR too low)
     matchMsg.classList.remove('visible');
     var errText = t('gara_qty_error').replace('{garaSum}', garaSum).replace('{totalMnp}', totalMnp);
     errorMsg.innerHTML = errText;
@@ -1162,7 +1276,7 @@ function calcNew(){
   var totalGT = qtyGT * rateGT;
   var rechargeTotal = 0;
   if(withRecharge){ rechargeTotal = (qtyLTE * AVG_LTE_NEW) + (qtyGT * AVG_GT_NEW); }
-  var simMarginTotal = total * SIM_MARGIN;
+  var simMarginTotal = newMarginOn ? total * SIM_MARGIN : 0;
 
   var grand = totalLTE + totalGT + rechargeTotal + simMarginTotal;
 
@@ -1176,14 +1290,16 @@ function calcNew(){
   if(withRecharge){
     html += '<div class="result-row"><span>'+t('calc_recharge_label')+'</span><span class="r-val gold">'+fmt(rechargeTotal)+'</span></div>';
   }
-  // SIM Margin row
-  html += '<div class="result-row"><span>'+t('calc_sim_margin_label')+' ('+total+' × €'+SIM_MARGIN+')</span><span class="r-val" style="color:rgba(255,255,255,.7);">'+fmt(simMarginTotal)+'</span></div>';
+  if(newMarginOn){
+    html += '<div class="result-row"><span>'+t('calc_sim_margin_label')+' ('+total+' × €'+SIM_MARGIN+')</span><span class="r-val" style="color:rgba(255,255,255,.7);">'+fmt(simMarginTotal)+'</span></div>';
+  } else {
+    html += '<div class="result-row" style="opacity:.45;"><span>'+t('calc_sim_margin_label')+' — <em style="font-style:normal;font-size:11px;">'+t('toggle_margin_no')+'</em></span><span class="r-val dim">€0</span></div>';
+  }
 
   $('res-new-rows').innerHTML = html;
   $('res-new-total').textContent = fmt(grand);
   $('res-new').classList.add('visible');
 
-  // Show/hide recharge note
   var noteEl = $('recharge-note-new');
   if(withRecharge){ noteEl.classList.add('visible'); }
   else { noteEl.classList.remove('visible'); }
@@ -1206,7 +1322,6 @@ function calcMnp(){
   var garaSum = garaPremQty + garaOthQty;
   var garaEligible = totalMnp >= 15;
 
-  // BLOCK calculation if GARA is eligible AND operator qty doesn't match total MNP
   if(garaEligible && garaSum > 0 && garaSum !== totalMnp){
     var blockText = t('gara_calc_blocked').replace('{garaSum}', garaSum).replace('{totalMnp}', totalMnp);
     $('res-mnp-rows').innerHTML = '<div class="result-row" style="background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);"><span style="color:#fca5a5;">'+blockText+'</span></div>';
@@ -1251,12 +1366,10 @@ function calcMnp(){
   if(withRecharge){
     html += '<div class="result-row"><span>'+t('calc_recharge_label')+'</span><span class="r-val gold">'+fmt(rechargeTotal)+'</span></div>';
   }
-  // SIM Margin row
   html += '<div class="result-row"><span>'+t('calc_sim_margin_label')+' ('+totalMnp+' × €'+SIM_MARGIN+')</span><span class="r-val" style="color:rgba(255,255,255,.7);">'+fmt(simMarginTotal)+'</span></div>';
 
   $('res-mnp-rows').innerHTML = html;
 
-  // Breakdown
   var bdHtml = '';
   if(qtyLTE>0) bdHtml += '<div class="bd-item"><span>MNP ≤€6.99 ('+qtyLTE+' × €'+rateLTE+')</span><span class="bd-v">'+fmt(stdLTE)+'</span></div>';
   if(qtyGT>0) bdHtml += '<div class="bd-item"><span>MNP >€6.99 ('+qtyGT+' × €'+rateGT+')</span><span class="bd-v">'+fmt(stdGT)+'</span></div>';
@@ -1270,7 +1383,6 @@ function calcMnp(){
   $('res-mnp-total').textContent = fmt(grand);
   $('res-mnp').classList.add('visible');
 
-  // Show/hide recharge note
   var noteEl = $('recharge-note-mnp');
   if(withRecharge){ noteEl.classList.add('visible'); }
   else { noteEl.classList.remove('visible'); }
@@ -1281,6 +1393,7 @@ $('btn-en').addEventListener('click',function(){setLang('en');});
 $('btn-it').addEventListener('click',function(){setLang('it');});
 $('btn-ur').addEventListener('click',function(){setLang('ur');});
 $('btn-bn').addEventListener('click',function(){setLang('bn');});
+$('btn-ta').addEventListener('click',function(){setLang('ta');});
 $('tab-new').addEventListener('click',function(){switchCalcTab('new');});
 $('tab-mnp').addEventListener('click',function(){switchCalcTab('mnp');});
 $('ptab-mnp').addEventListener('click',function(){switchPlansTab('mnp');});
@@ -1288,19 +1401,15 @@ $('ptab-new').addEventListener('click',function(){switchPlansTab('new');});
 $('btn-calc-new').addEventListener('click',calcNew);
 $('btn-calc-mnp').addEventListener('click',calcMnp);
 
-// Live tier updates for New Activations
 $('n-qty-lte').addEventListener('input',updateNewTier);
 $('n-qty-gt').addEventListener('input',updateNewTier);
 
-// Live tier updates for MNP (also controls GARA visibility)
 $('m-qty-lte').addEventListener('input',updateMnpTier);
 $('m-qty-gt').addEventListener('input',updateMnpTier);
 
-// GARA quantity inputs - live validation
 $('m-gara-premium').addEventListener('input',validateGaraQty);
 $('m-gara-other').addEventListener('input',validateGaraQty);
 
-// Auto recharge toggle - show/hide notes live
 $('n-recharge').addEventListener('change',function(){
   var noteEl = $('recharge-note-new');
   if(this.checked){ noteEl.classList.add('visible'); }
@@ -1312,7 +1421,6 @@ $('m-recharge').addEventListener('change',function(){
   else { noteEl.classList.remove('visible'); }
 });
 
-// Enter key to calculate
 $('n-qty-lte').addEventListener('keydown',function(e){if(e.key==='Enter')calcNew();});
 $('n-qty-gt').addEventListener('keydown',function(e){if(e.key==='Enter')calcNew();});
 $('m-qty-lte').addEventListener('keydown',function(e){if(e.key==='Enter')calcMnp();});
