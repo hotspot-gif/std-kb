@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lycamobile – Normal Incentive Scheme</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{--navy:#21264E;--navy-light:#2d3470;--green:#08DC7D;--green-dark:#08a35e;--green-deeper:#067a47;--blue:#245BC1;--gold:#FFD54F;--gold-dark:#b8860b;--red:#dc2626;--cyan:#00D7FF;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -82,7 +83,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .gara-box .box-operators{background:rgba(0,0,0,.35);padding:14px 16px;text-align:center;}
 .gara-box .op-label{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:6px;}
 .gara-box .op-names{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;color:#fff;line-height:1.5;}
-.gara-conditions{padding:16px 24px;background:rgba(6,122,71,.3);border-top:1px solid rgba(8,220,125,.2);}
+.gara-conditions{padding:16px 24px;background:rgba(6,122,71,.3);border-top:1px solid rgba(8,220,125,.2);text-align:left;}
 .gara-conditions li{font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;list-style:none;padding:2px 0;}
 .gara-conditions li::before{content:'↳ ';color:var(--green);font-weight:700;}
 .recharge-section{background:linear-gradient(135deg,var(--blue) 0%,#1a4a9e 100%);border:2px solid var(--blue);border-radius:12px;overflow:hidden;}
@@ -241,6 +242,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .margin-pill button{padding:7px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;background:transparent;color:rgba(255,255,255,.4);}
 .margin-pill button.mp-active-yes{background:var(--gold);color:var(--navy);}
 .margin-pill button.mp-active-no{background:rgba(220,38,38,.25);color:#fca5a5;border:1px solid rgba(220,38,38,.3);}
+.pdf-btn{display:block;width:100%;margin-top:10px;padding:12px;background:transparent;color:var(--green);border:2px solid var(--green);border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.pdf-btn:hover{background:var(--green);color:var(--navy);}
+.pdf-btn:active{transform:scale(.99);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 body.rtl .term-item{border-left:none;border-right:3px solid transparent;}
 body.rtl .term-item.t-green{border-right-color:var(--green);}
@@ -422,7 +426,7 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
     <div class="card">
       <div class="card-header gold-bg"><h3 data-i18n="reduced_head">When Renewal Rates Are Low</h3></div>
       <div class="card-body">
-        <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px;line-height:1.6;" data-i18n="reduced_desc">If the national plan renewal (T1) is <strong style="color:#fff">&lt;30%</strong> or the port-in plan renewal is <strong style="color:#fff">&lt;50%</strong>, a reduced incentive applies:</p>
+        <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px;line-height:1.6;" data-i18n="reduced_desc">If the national plan renewal (T1) is <strong style="color:#fff"><30%</strong> or the port-in plan renewal is <strong style="color:#fff"><50%</strong>, a reduced incentive applies:</p>
         <table class="reduced-table">
           <thead><tr><th data-i18n="th_plan_type">Plan Type</th><th>MNP</th><th data-i18n="new_act_label">New Act.</th></tr></thead>
           <tbody>
@@ -582,6 +586,8 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
           <div class="sim-margin-note" data-i18n="sim_margin_note">
             <strong>ℹ SIM Margin:</strong> The examples are calculated considering a minimum SIM margin of €5; the actual margin may vary depending on the region and the reference city.
           </div>
+          <!-- PDF Download Button for New Activations -->
+          <button class="pdf-btn" id="pdf-new-btn" data-i18n="pdf_btn">⬇ Download PDF</button>
         </div>
       </div>
 
@@ -624,7 +630,7 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
           <span class="tier-sep">→</span>
           <span data-i18n="tier_label">Tier:</span>
           <span class="tier-badge" id="m-tier-display">15–34</span>
-          <span class="tier-sep">→</span>
+          <span class="tier-sep" id="m-gara-arrow" style="display:none;">→</span>
           <span class="gara-unlocked-badge" id="gara-unlocked-badge">🔓 <span data-i18n="gara_unlocked">GARA UNLOCKED</span></span>
         </div>
 
@@ -685,10 +691,6 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
         <div class="results-box" id="res-mnp">
           <p class="results-title" data-i18n="res_title">EARNINGS BREAKDOWN</p>
           <div class="result-rows" id="res-mnp-rows"></div>
-          <div class="mnp-breakdown">
-            <p class="bd-title" data-i18n="bd_title">Incentive Detail</p>
-            <div id="bd-items"></div>
-          </div>
           <div class="result-total">
             <span class="tot-label" data-i18n="total_earnings">Total Earnings</span>
             <span class="tot-val" id="res-mnp-total">€0</span>
@@ -708,6 +710,8 @@ body.rtl .sim-margin-note{border-left:none;border-right:3px solid rgba(255,255,2
               <span data-i18n="mnp_note_renewal_text">Continuous usage and renewal required for minimum 6 months or else Malus up to 50% applicable & full clawback for fraud.</span>
             </div>
           </div>
+          <!-- PDF Download Button for MNP -->
+          <button class="pdf-btn" id="pdf-mnp-btn" data-i18n="pdf_btn">⬇ Download PDF</button>
         </div>
       </div>
     </div>
@@ -784,7 +788,7 @@ en: {
   step1:"Activate the plan via <strong>CPOS</strong>",step2:"Select <strong>Credit/Debit Card</strong>",step3:"Scan the <strong>QR Code</strong>",
   recharge_note_label:"Note:",recharge_note:"POS activations only. Not valid for APP/ONLINE. First plan per MSISDN only.",
   tag_reduced:"Reduced Renewal",sec4_title:"Reduced Renewal Conditions",reduced_head:"When Renewal Rates Are Low",
-  reduced_desc:"If the national plan renewal (T1) is <strong style='color:#fff'>&lt;30%</strong> or the port-in plan renewal is <strong style='color:#fff'>&lt;50%</strong>, a reduced incentive applies:",
+  reduced_desc:"If the national plan renewal (T1) is <strong style='color:#fff'><30%</strong> or the port-in plan renewal is <strong style='color:#fff'><50%</strong>, a reduced incentive applies:",
   th_plan_type:"Plan Type",
   tag_plans:"Eligible Plans",sec5_title:"Eligible Plans for Incentive",ptab_mnp:"→ MNP Port-In Plans",ptab_new:"→ New Activation Plans",
   plans_national:"National",plans_5g_national:"5G National",plans_international:"International",th_plan:"Plan",th_price:"Price",
@@ -830,7 +834,31 @@ en: {
   term7:"<strong>Port-out deductions:</strong> Port-out without FCA or without plan/use. Port-out within 7 days (except plans >€9.99). Port-in + port-out within 60 days = false. Pre-loaded SIMs included in calculations.",
   term8:"Malus up to <strong>50%</strong> if renewal rate <65%. Possible <strong>verification checks</strong> on activation regularity.",
   disc_title:"Disclaimer",disclaimer:"Lycamobile regularly monitors the monthly activities of its Authorised Retailers. Should practices be found that do not comply with applicable regulations or the terms and conditions of the incentive plan, Lycamobile reserves the right to temporarily suspend payments, pending in-depth verification. Payments will subsequently be made based on the results of such verifications.",
-  footer_dist:"Authorised Distributor",portal_link:"Retailer Portal",all_rights:"All rights reserved."
+  footer_dist:"Authorised Distributor",portal_link:"Retailer Portal",all_rights:"All rights reserved.",
+  pdf_btn:"⬇ Download PDF",pdf_title:"Incentive Calculation Report",pdf_new:"New Activations",pdf_mnp:"MNP Port-In",pdf_calc_date:"Calculation Date",pdf_report:"INCENTIVE CALCULATION REPORT",pdf_breakdown:"EARNINGS BREAKDOWN",
+  pdf_grand_total:"GRAND TOTAL",pdf_disclaimer:"This document is for informational purposes only. Actual incentives may vary based on verification and compliance with all terms and conditions.",
+  pdf_activation_details:"ACTIVATION DETAILS",pdf_total_activations:"TOTAL ACTIVATIONS",pdf_total_portins:"TOTAL PORT-INS",pdf_tier:"TIER",
+  pdf_terms_title:"TERMS & CONDITIONS",pdf_terms_sub:"Programme Rules · Normal Incentive Scheme",
+  pdf_gara_conditions:"CONDITIONS",pdf_gara_subline:"MNP PORT-IN ONLY  |  Minimum 15 MNPs per month",
+  pdf_auto_recharge:"AUTO RECHARGE CASHBACK:",pdf_auto_recharge_desc:"Activate via CPOS with Credit/Debit Card + QR Code scan. Earn the full plan value as cashback. POS only — not valid for APP/ONLINE. First plan per MSISDN.",
+  pdf_malus:"MALUS & CLAWBACK:",pdf_malus_desc:"Continuous usage and renewal required for minimum 6 months. Malus up to 50% applies for low renewal rates. Full clawback for fraud or non-compliance.",
+  pdf_item:"Item",pdf_amount:"Amount",
+  pdf_summary_new:"<=€6.99: {lte}  |  >€6.99: {gt}  |  Total: {tot}  |  Tier: {tier}",
+  pdf_summary_mnp:"MNP <=€6.99: {lte}  |  MNP >€6.99: {gt}  |  Total: {tot}  |  Tier: {tier}",
+  pdf_gara_cond1:"Valid port-in offer + completed FCA same month.",
+  pdf_gara_cond2:"Iliad · Fastweb · CoopVoce · PosteMobile = Premium.",
+  pdf_gara_cond3:"Unique Tax Code + IMEI only.",
+  pdf_gara_cond4:"Credited after 60 days.",
+  pdf_terms:[
+    "Minimum 1 SIM with FCA each month. Calculation period: 1st to last day of the month.",
+    "Min plan port-in: €5.99 | New activations: €6.99. MNP and new activations counted separately.",
+    "SIM must complete FCA. Activations must be correct and compliant with all programme rules.",
+    "Port-in incentives credited after 60 days, subject to administrative verification and usage.",
+    ">=10 activations with >5% without use: deduction. >5% port-out within 30 days: deduction. €10 penalty per abuse + incentive recovery.",
+    "+€5 for NON-HP SIM via POS (max €100). POS inactive 90 days: balance suspended.",
+    "Port-out deductions: without FCA/plan/use; within 7 days (except >€9.99); port-in + port-out within 60 days = false activation.",
+    "Malus up to 50% if renewal rate <65%. Verification checks may apply on activation regularity."
+  ]
 },
 it: {
   partner_program:"Partner Program",
@@ -853,7 +881,7 @@ it: {
   step1:"Attiva il piano tramite <strong>CPOS</strong>",step2:"Seleziona <strong>Carta di Credito/Debito</strong>",step3:"Scansiona il <strong>codice QR</strong>",
   recharge_note_label:"Nota:",recharge_note:"Solo attivazioni tramite POS. Non valido per APP/ONLINE. Solo primo piano per MSISDN.",
   tag_reduced:"Rinnovo Ridotto",sec4_title:"Condizioni Rinnovo Ridotto",reduced_head:"Quando il Tasso di Rinnovo è Basso",
-  reduced_desc:"Se il rinnovo (T1) del piano nazionale è <strong style='color:#fff'>&lt;30%</strong> o del piano port-in è <strong style='color:#fff'>&lt;50%</strong>, verrà applicato un incentivo ridotto:",
+  reduced_desc:"Se il rinnovo (T1) del piano nazionale è <strong style='color:#fff'><30%</strong> o del piano port-in è <strong style='color:#fff'><50%</strong>, verrà applicato un incentivo ridotto:",
   th_plan_type:"Tipo Piano",
   tag_plans:"Piani Idonei",sec5_title:"Piani Idonei per l'Incentivo",ptab_mnp:"→ Piani per Portabilità (MNP)",ptab_new:"→ Piani per Nuove Attivazioni",
   plans_national:"Nazionali",plans_5g_national:"5G Nazionali",plans_international:"Internazionali",th_plan:"Piano",th_price:"Prezzo",
@@ -897,9 +925,33 @@ it: {
   term5:"≥10 attivazioni con >5% senza uso: <strong>detrazione</strong>. >5% port-out entro 30gg: <strong>detrazione</strong>. <strong>€10</strong> per abuso + recupero incentivi.",
   term6:"<strong>+€5</strong> SIM NON-HP via POS (max €100). POS inattivo 90gg: saldo sospeso.",
   term7:"<strong>Detrazioni port-out:</strong> Port-out senza FCA o senza piano/utilizzo. Port-out entro 7gg (eccetto piani >€9,99). Port-in + port-out entro 60gg = falso. SIM precaricate incluse nei calcoli.",
-  term8:"Malus fino a <strong>50%</strong> se rinnovo &lt;65%. Possibili <strong>verifiche sulla regolarità</strong> delle attivazioni.",
+  term8:"Malus fino a <strong>50%</strong> se rinnovo <65%. Possibili <strong>verifiche sulla regolarità</strong> delle attivazioni.",
   disc_title:"Disclaimer",disclaimer:"Lycamobile monitora regolarmente le attività mensili dei propri Rivenditori Autorizzati. Qualora vengano riscontrate pratiche non conformi alle normative vigenti o ai termini e condizioni del piano di incentivazione, Lycamobile si riserva il diritto di sospendere temporaneamente i pagamenti, in attesa di verifiche approfondite.",
-  footer_dist:"Distributore Autorizzato",portal_link:"Portale Rivenditore",all_rights:"Tutti i diritti riservati."
+  footer_dist:"Distributore Autorizzato",portal_link:"Portale Rivenditore",all_rights:"Tutti i diritti riservati.",
+  pdf_btn:"⬇ Scarica PDF",pdf_title:"Report Calcolo Incentivo",pdf_new:"Nuove Attivazioni",pdf_mnp:"MNP Port-In",pdf_calc_date:"Data di Calcolo",pdf_report:"REPORT CALCOLO INCENTIVO",pdf_breakdown:"RIEPILOGO GUADAGNI",
+  pdf_grand_total:"TOTALE GENERALE",pdf_disclaimer:"Questo documento è solo a scopo informativo. Gli incentivi effettivi possono variare in base alla verifica e al rispetto di tutti i termini e le condizioni.",
+  pdf_activation_details:"DETTAGLI ATTIVAZIONE",pdf_total_activations:"TOTALE ATTIVAZIONI",pdf_total_portins:"TOTALE PORT-IN",pdf_tier:"FASCIA",
+  pdf_terms_title:"TERMINI E CONDIZIONI",pdf_terms_sub:"Regole del Programma · Schema Incentivi Normale",
+  pdf_gara_conditions:"CONDIZIONI",pdf_gara_subline:"SOLO MNP PORT-IN  |  Minimo 15 MNP al mese",
+  pdf_auto_recharge:"CASHBACK RICARICA AUTOMATICA:",pdf_auto_recharge_desc:"Attiva tramite CPOS con Carta di Credito/Debito + scansione QR. Guadagna il valore del piano come cashback. Solo POS — non valido per APP/ONLINE. Primo piano per MSISDN.",
+  pdf_malus:"MALUS E CLAWBACK:",pdf_malus_desc:"Utilizzo e rinnovo continuo richiesti per minimo 6 mesi. Malus fino al 50% per bassi tassi di rinnovo. Recupero totale per frode o non conformità.",
+  pdf_item:"Voce",pdf_amount:"Importo",
+  pdf_summary_new:"<=€6.99: {lte}  |  >€6.99: {gt}  |  Totale: {tot}  |  Fascia: {tier}",
+  pdf_summary_mnp:"MNP <=€6.99: {lte}  |  MNP >€6.99: {gt}  |  Totale: {tot}  |  Fascia: {tier}",
+  pdf_gara_cond1:"Offerta port-in valida + FCA completato nello stesso mese.",
+  pdf_gara_cond2:"Iliad · Fastweb · CoopVoce · PosteMobile = Premium.",
+  pdf_gara_cond3:"Solo Codice Fiscale univoco + IMEI.",
+  pdf_gara_cond4:"Accreditato dopo 60 giorni.",
+  pdf_terms:[
+    "Minimo 1 SIM con FCA ogni mese. Calcolo: 1° - ultimo giorno del mese.",
+    "Piano minimo port-in: €5,99 | Nuove attivazioni: €6,99. Contate separatamente.",
+    "La SIM deve completare FCA. Attivazioni corrette e conformi.",
+    "Incentivi port-in accreditati dopo 60 giorni previa verifica amministrativa.",
+    ">=10 attivazioni con >5% senza uso: detrazione. >5% port-out entro 30gg: detrazione. €10 per abuso + recupero.",
+    "+€5 SIM NON-HP via POS (max €100). POS inattivo 90gg: saldo sospeso.",
+    "Detrazioni port-out: senza FCA/piano/utilizzo; entro 7gg (eccetto >€9,99); port-in + port-out entro 60gg = falso.",
+    "Malus fino al 50% se rinnovo <65%. Possibili verifiche sulla regolarità delle attivazioni."
+  ]
 },
 ur: {
   partner_program:"پارٹنر پروگرام",
@@ -922,7 +974,7 @@ ur: {
   step1:"<strong>CPOS</strong> کے ذریعے پلان فعال کریں",step2:"<strong>کریڈٹ/ڈیبٹ کارڈ</strong> منتخب کریں",step3:"<strong>QR کوڈ</strong> اسکین کریں",
   recharge_note_label:"نوٹ:",recharge_note:"صرف POS۔ APP/ONLINE کے لیے نہیں۔ فی MSISDN صرف پہلا پلان۔",
   tag_reduced:"کم رینیوول",sec4_title:"کم رینیوول شرائط",reduced_head:"جب رینیوول ریٹ کم ہو",
-  reduced_desc:"اگر T1 <strong style='color:#fff'>&lt;30%</strong> ہو یا پورٹ-ان رینیوول <strong style='color:#fff'>&lt;50%</strong> ہو تو کم انسینٹو لاگو:",
+  reduced_desc:"اگر T1 <strong style='color:#fff'><30%</strong> ہو یا پورٹ-ان رینیوول <strong style='color:#fff'><50%</strong> ہو تو کم انسینٹو لاگو:",
   th_plan_type:"پلان کی قسم",
   tag_plans:"اہل پلانز",sec5_title:"انسینٹو کے لیے اہل پلانز",ptab_mnp:"→ MNP پورٹ-ان پلانز",ptab_new:"→ نئی ایکٹیویشن پلانز",
   plans_national:"قومی",plans_5g_national:"5G قومی",plans_international:"بین الاقوامی",th_plan:"پلان",th_price:"قیمت",
@@ -964,9 +1016,11 @@ ur: {
   term5:"≥10 ایکٹیویشنز جن میں >5% بغیر استعمال: <strong>کٹوتی</strong>۔ فی غلط استعمال <strong>€10</strong>۔",
   term6:"POS کے ذریعے NON-HP SIM پر <strong>+€5</strong> (زیادہ سے زیادہ €100)۔",
   term7:"<strong>پورٹ-آؤٹ کٹوتیاں:</strong> FCA کے بغیر پورٹ-آؤٹ۔ 60 دن کے اندر پورٹ-ان + پورٹ-آؤٹ = جعلی۔",
-  term8:"رینیوول ریٹ &lt;65% پر <strong>50%</strong> تک مالُس۔",
+  term8:"رینیوول ریٹ <65% پر <strong>50%</strong> تک مالُس۔",
   disc_title:"دستبرداری",disclaimer:"Lycamobile اپنے مجاز ریٹیلرز کی نگرانی کرتا ہے۔ غیر مطابق طریقے پائے جائیں تو ادائیگیاں معطل ہو سکتی ہیں۔",
-  footer_dist:"مجاز تقسیم کار",portal_link:"ریٹیلر پورٹل",all_rights:"تمام حقوق محفوظ ہیں۔"
+  footer_dist:"مجاز تقسیم کار",portal_link:"ریٹیلر پورٹل",all_rights:"تمام حقوق محفوظ ہیں۔",
+  pdf_btn:"⬇ PDF ڈاؤن لوڈ",pdf_title:"انسینٹو کیلکولیشن رپورٹ",pdf_new:"نئی ایکٹیویشنز",pdf_mnp:"MNP پورٹ-ان",pdf_calc_date:"حساب کی تاریخ",pdf_report:"انسینٹو کیلکولیشن رپورٹ",pdf_breakdown:"آمدنی کی تفصیل",
+  pdf_grand_total:"کل رقم",pdf_disclaimer:"یہ دستاویز صرف معلوماتی مقاصد کے لیے ہے۔ اصل انسینٹو تصدیق اور شرائط کے مطابق مختلف ہو سکتے ہیں۔"
 },
 bn: {
   partner_program:"পার্টনার প্রোগ্রাম",
@@ -989,7 +1043,7 @@ bn: {
   step1:"<strong>CPOS</strong> এর মাধ্যমে সক্রিয় করুন",step2:"<strong>ক্রেডিট/ডেবিট কার্ড</strong> নির্বাচন",step3:"<strong>QR কোড</strong> স্ক্যান",
   recharge_note_label:"দ্রষ্টব্য:",recharge_note:"শুধুমাত্র POS। APP/ONLINE নয়। প্রতি MSISDN প্রথম প্ল্যান।",
   tag_reduced:"কম নবায়ন",sec4_title:"কম নবায়ন শর্তাবলী",reduced_head:"যখন নবায়ন হার কম",
-  reduced_desc:"যদি T1 <strong style='color:#fff'>&lt;30%</strong> বা পোর্ট-ইন নবায়ন <strong style='color:#fff'>&lt;50%</strong> হয়:",
+  reduced_desc:"যদি T1 <strong style='color:#fff'><30%</strong> বা পোর্ট-ইন নবায়ন <strong style='color:#fff'><50%</strong> হয়:",
   th_plan_type:"প্ল্যানের ধরন",
   tag_plans:"যোগ্য প্ল্যান",sec5_title:"ইনসেন্টিভের জন্য যোগ্য প্ল্যান",ptab_mnp:"→ MNP পোর্ট-ইন প্ল্যান",ptab_new:"→ নতুন অ্যাক্টিভেশন প্ল্যান",
   plans_national:"জাতীয়",plans_5g_national:"5G জাতীয়",plans_international:"আন্তর্জাতিক",th_plan:"প্ল্যান",th_price:"মূল্য",
@@ -1031,9 +1085,11 @@ bn: {
   term5:"≥10 অ্যাক্টিভেশনে >5% ব্যবহার ছাড়া: <strong>কর্তন</strong>। প্রতি অপব্যবহারে <strong>€10</strong>।",
   term6:"POS-এ NON-HP SIM-এ <strong>+€5</strong> (সর্বোচ্চ €100)।",
   term7:"<strong>পোর্ট-আউট কর্তন:</strong> FCA ছাড়া পোর্ট-আউট। 60 দিনে পোর্ট-ইন+আউট = মিথ্যা।",
-  term8:"নবায়ন &lt;65% হলে <strong>50%</strong> মালুস।",
+  term8:"নবায়ন <65% হলে <strong>50%</strong> মালুস।",
   disc_title:"দায়বদ্ধতার অস্বীকৃতি",disclaimer:"Lycamobile তার অনুমোদিত রিটেইলারদের পর্যবেক্ষণ করে।",
-  footer_dist:"অনুমোদিত পরিবেশক",portal_link:"রিটেইলার পোর্টাল",all_rights:"সমস্ত অধিকার সংরক্ষিত।"
+  footer_dist:"অনুমোদিত পরিবেশক",portal_link:"রিটেইলার পোর্টাল",all_rights:"সমস্ত অধিকার সংরক্ষিত।",
+  pdf_btn:"⬇ PDF ডাউনলোড",pdf_title:"ইনসেন্টিভ গণনা রিপোর্ট",pdf_new:"নতুন অ্যাক্টিভেশন",pdf_mnp:"MNP পোর্ট-ইন",pdf_calc_date:"গণনার তারিখ",pdf_report:"ইনসেন্টিভ গণনা রিপোর্ট",pdf_breakdown:"উপার্জনের বিবরণ",
+  pdf_grand_total:"সর্বমোট",pdf_disclaimer:"এই দস্তাবেজটি শুধুমাত্র তথ্যের উদ্দেশ্যে। প্রকৃত ইনসেন্টিভ যাচাইকরণ এবং সমস্ত শর্তাবলী মেনে চলার উপর ভিত্তি করে পরিবর্তিত হতে পারে।"
 },
 ta: {
   partner_program:"பார்ட்னர் திட்டம்",
@@ -1056,7 +1112,7 @@ ta: {
   step1:"<strong>CPOS</strong> மூலம் திட்டத்தை செயல்படுத்துங்கள்",step2:"<strong>கிரெடிட்/டெபிட் கார்டை</strong> தேர்ந்தெடுங்கள்",step3:"<strong>QR குறியீட்டை</strong> ஸ்கேன் செய்யுங்கள்",
   recharge_note_label:"குறிப்பு:",recharge_note:"POS செயல்படுத்தல்கள் மட்டுமே. APP/ONLINE க்கு செல்லாது. ஒரு MSISDN க்கு முதல் திட்டம் மட்டுமே.",
   tag_reduced:"குறைக்கப்பட்ட புதுப்பிப்பு",sec4_title:"குறைக்கப்பட்ட புதுப்பிப்பு நிபந்தனைகள்",reduced_head:"புதுப்பிப்பு விகிதம் குறைவாக இருக்கும்போது",
-  reduced_desc:"தேசிய திட்ட புதுப்பிப்பு (T1) <strong style='color:#fff'>&lt;30%</strong> அல்லது போர்ட்-இன் புதுப்பிப்பு <strong style='color:#fff'>&lt;50%</strong> ஆனால்:",
+  reduced_desc:"தேசிய திட்ட புதுப்பிப்பு (T1) <strong style='color:#fff'><30%</strong> அல்லது போர்ட்-இன் புதுப்பிப்பு <strong style='color:#fff'><50%</strong> ஆனால்:",
   th_plan_type:"திட்ட வகை",
   tag_plans:"தகுதியுள்ள திட்டங்கள்",sec5_title:"ஊக்கத்திற்கான தகுதியுள்ள திட்டங்கள்",ptab_mnp:"→ MNP போர்ட்-இன் திட்டங்கள்",ptab_new:"→ புதிய செயல்படுத்தல் திட்டங்கள்",
   plans_national:"தேசிய",plans_5g_national:"5G தேசிய",plans_international:"சர்வதேச",th_plan:"திட்டம்",th_price:"விலை",
@@ -1098,9 +1154,11 @@ ta: {
   term5:"≥10 செயல்படுத்தல்களில் >5% பயன்பாடு இல்லாமல்: <strong>கழித்தல்</strong>. துஷ்பிரயோகம் ஒவ்வொன்றுக்கும் <strong>€10</strong>.",
   term6:"POS வழியாக NON-HP SIM க்கு <strong>+€5</strong> (அதிகபட்சம் €100).",
   term7:"<strong>போர்ட்-அவுட் கழிவுகள்:</strong> FCA இல்லாமல் போர்ட்-அவுட். 60 நாட்களில் போர்ட்-இன் + அவுட் = தவறானது.",
-  term8:"புதுப்பிப்பு &lt;65% ஆனால் <strong>50%</strong> மாலஸ்.",
+  term8:"புதுப்பிப்பு <65% ஆனால் <strong>50%</strong> மாலஸ்.",
   disc_title:"மறுப்பு",disclaimer:"Lycamobile தனது அங்கீகரிக்கப்பட்ட சில்லறை விற்பனையாளர்களின் செயல்பாடுகளை தவறாமல் கண்காணிக்கிறது.",
-  footer_dist:"அங்கீகரிக்கப்பட்ட விநியோகஸ்தர்",portal_link:"சில்லறை போர்டல்",all_rights:"அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."
+  footer_dist:"அங்கீகரிக்கப்பட்ட விநியோகஸ்தர்",portal_link:"சில்லறை போர்டல்",all_rights:"அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.",
+  pdf_btn:"⬇ PDF பதிவிறக்கம்",pdf_title:"ஊக்கக் கணக்கீட்டு அறிக்கை",pdf_new:"புதிய செயல்படுத்தல்கள்",pdf_mnp:"MNP போர்ட்-இன்",pdf_calc_date:"கணக்கீட்டு தேதி",pdf_report:"ஊக்கக் கணக்கீட்டு அறிக்கை",pdf_breakdown:"வருவாய் விவரம்",
+  pdf_grand_total:"மொத்த தொகை",pdf_disclaimer:"இந்த ஆவணம் தகவல் நோக்கங்களுக்காக மட்டுமே. உண்மையான ஊக்கத்தொகை சரிபார்ப்பு மற்றும் அனைத்து விதிமுறைகளுக்கும் இணங்குவதன் அடிப்படையில் மாறுபடலாம்."
 }
 };
 
@@ -1152,6 +1210,10 @@ function setLang(lang){
   });
   $('res-new').classList.remove('visible');
   $('res-mnp').classList.remove('visible');
+  // Preload Unicode font in background when switching to Tamil/Bengali/Urdu
+  if (lang === 'ta' || lang === 'bn' || lang === 'ur') {
+    loadUnicodeFont(lang);
+  }
   updateNewTier();
   updateMnpTier();
 }
@@ -1194,12 +1256,15 @@ function updateMnpTier(){
   $('m-total-display').textContent = total;
   $('m-tier-display').textContent = total>0?getTierLabel(total):'—';
 
-  // Show/hide GARA UNLOCKED badge next to tier
+  // Show/hide GARA UNLOCKED badge and arrow next to tier
   var badge = $('gara-unlocked-badge');
+  var garaArrow = $('m-gara-arrow');
   if(garaEligible){
     badge.classList.add('visible');
+    if(garaArrow) garaArrow.style.display = '';
   } else {
     badge.classList.remove('visible');
+    if(garaArrow) garaArrow.style.display = 'none';
   }
 
   // Show/hide GARA operator input section
@@ -1374,26 +1439,628 @@ function calcMnp(){
 
   $('res-mnp-rows').innerHTML = html;
 
-  var bdHtml = '';
-  if(qtyLTE>0) bdHtml += '<div class="bd-item"><span>MNP ≤€6.99 ('+qtyLTE+' × €'+rateLTE+')</span><span class="bd-v">'+fmt(stdLTE)+'</span></div>';
-  if(qtyGT>0) bdHtml += '<div class="bd-item"><span>MNP >€6.99 ('+qtyGT+' × €'+rateGT+')</span><span class="bd-v">'+fmt(stdGT)+'</span></div>';
-  if(garaEligible && garaPremQty>0 && garaSum===totalMnp) bdHtml += '<div class="bd-item"><span>GARA Premium ('+garaPremQty+' × €40)</span><span class="bd-v gara">'+fmt(garaPremTotal)+'</span></div>';
-  if(garaEligible && garaOthQty>0 && garaSum===totalMnp) bdHtml += '<div class="bd-item"><span>GARA Other ('+garaOthQty+' × €20)</span><span class="bd-v">'+fmt(garaOthTotal)+'</span></div>';
-  if(!garaEligible) bdHtml += '<div class="bd-item"><span>'+t('calc_gara_bonus')+'</span><span class="bd-v" style="color:rgba(255,255,255,.3);">€0 — '+t('gara_not_met')+'</span></div>';
-  if(withRecharge) bdHtml += '<div class="bd-item"><span>'+t('calc_recharge_label')+'</span><span class="bd-v gold">'+fmt(rechargeTotal)+'</span></div>';
-  if(mnpMarginOn){
-    bdHtml += '<div class="bd-item"><span>'+t('calc_sim_margin_label')+' ('+totalMnp+' × €'+SIM_MARGIN+')</span><span class="bd-v" style="color:rgba(255,255,255,.7);">'+fmt(simMarginTotal)+'</span></div>';
-  } else {
-    bdHtml += '<div class="bd-item"><span>'+t('calc_sim_margin_label')+' — <em style="font-style:normal;font-size:11px;">'+t('toggle_margin_no')+'</em></span><span class="bd-v" style="color:rgba(255,255,255,.3);">€0</span></div>';
-  }
-  $('bd-items').innerHTML = bdHtml;
-
   $('res-mnp-total').textContent = fmt(grand);
   $('res-mnp').classList.add('visible');
 
   var noteEl = $('recharge-note-mnp');
   if(withRecharge){ noteEl.classList.add('visible'); }
   else { noteEl.classList.remove('visible'); }
+}
+
+// ============ PDF GENERATION ============
+var LOGO_URL = 'https://cms-assets.ldsvcplatform.com/IT/s3fs-public/inline-images/logo_new1.png';
+var LOGO_DATA_URL = null;
+var LOGO_ASPECT_RATIO = 3.5; // default fallback
+var NAVY = '#21264E';
+var GREEN = '#08DC7D';
+var BLUE = '#245BC1';
+var GOLD = '#FFD54F';
+var WHITE = '#FFFFFF';
+
+// Pre-load logo into a data URL to avoid black background issues
+function preloadLogoForPDF() {
+  var img = new Image();
+  img.crossOrigin = 'Anonymous';
+  img.onload = function() {
+    var c = document.createElement('canvas');
+    c.width = img.naturalWidth;
+    c.height = img.naturalHeight;
+    var ctx = c.getContext('2d');
+    // Fill navy background to match the PDF header, so transparent parts blend in
+    ctx.fillStyle = '#21264E';
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(img, 0, 0);
+    LOGO_DATA_URL = c.toDataURL('image/png');
+    // Store aspect ratio for correct positioning in PDF
+    LOGO_ASPECT_RATIO = img.naturalWidth / img.naturalHeight;
+  };
+  img.onerror = function() {
+    LOGO_DATA_URL = null;
+  };
+  img.src = LOGO_URL;
+}
+// Kick off logo preload immediately
+preloadLogoForPDF();
+
+// Always use helvetica for PDF - it renders perfectly for all scripts
+// jsPDF custom TTF font embedding can cause glyph corruption with Unicode fonts
+function getPDFFontName() { return 'helvetica'; }
+function getPDFFontBoldName() { return 'helvetica'; }
+
+function generatePDF(type) {
+  var { jsPDF } = window.jspdf;
+  var doc = new jsPDF('p', 'mm', 'a4');
+  var pageW = 210;
+  var pageH = 297;
+  var margin = 20;
+  var contentW = pageW - 2 * margin;
+
+  var pdfFont = getPDFFontName();
+  var pdfBoldFont = getPDFFontBoldName();
+
+  // Helper functions
+  var pdfLang = curLang;
+  // For Tamil/Urdu/Bengali Unicode fonts can render incorrectly with the current PDF font setup.
+  // Per requirement: show English for those languages.
+  if (pdfLang === 'ta' || pdfLang === 'ur' || pdfLang === 'bn') pdfLang = 'en';
+
+  var pdfStrings = (T[pdfLang] || T.en);
+  function addHeader() {
+    // Navy header bar
+    doc.setFillColor(NAVY);
+    doc.rect(0, 0, pageW, 45, 'F');
+
+    // Green accent line
+    doc.setFillColor(GREEN);
+    doc.rect(0, 43, pageW, 2, 'F');
+
+    // Add logo from preloaded data URL using correct aspect ratio
+    if (LOGO_DATA_URL) {
+      var logoH = 16;
+      var logoW = logoH * LOGO_ASPECT_RATIO;
+      doc.addImage(LOGO_DATA_URL, 'PNG', margin, 12, logoW, logoH);
+    } else {
+      // Fallback - just draw text logo
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.setTextColor(GREEN);
+      doc.text('LYCAMOBILE', margin, 22);
+    }
+
+    // Title text on header
+    doc.setFont(pdfBoldFont, 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(WHITE);
+    doc.text(pdfStrings.pdf_title || 'INCENTIVE CALCULATION REPORT', pageW - margin, 20, { align: 'right' });
+
+    // Subtitle
+    doc.setFont(pdfFont, 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor('#AAAAAA');
+    var calcType = type === 'new' ? (pdfStrings.pdf_new || 'New Activations') : (pdfStrings.pdf_mnp || 'MNP Port-In');
+    var dateStr = new Date().toLocaleDateString('en-GB', {
+      year: 'numeric', month: 'long', day: 'numeric'
+    });
+    // Keep date format stable; only labels are translated
+    doc.text((pdfStrings.pdf_calc_date || 'Calculation Date') + ': ' + dateStr + '  |  ' + calcType, pageW - margin, 30, { align: 'right' });
+  }
+
+  function addFooter(pageNum) {
+    doc.setFillColor(NAVY);
+    doc.rect(0, pageH - 20, pageW, 20, 'F');
+    doc.setFont(pdfFont, 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor('#AAAAAA');
+    doc.text('Lycamobile · Partner Program', margin, pageH - 8);
+    doc.text('Page ' + pageNum, pageW - margin, pageH - 8, { align: 'right' });
+  }
+
+  var pageNum = 1;
+  addHeader();
+  addFooter(pageNum);
+
+  var yPos = 50;
+  var lineH = 7;
+
+  // ===== COMPUTE ALL INPUTS FIRST =====
+  var tileQtyLte = 0, tileQtyGt = 0, tileRateLte = 0, tileRateGt = 0, tileTotalCount = 0;
+  var items = [];
+  var grandTotal = 0;
+  var withRechargePDF = false;
+  var simMarginTotalPDF = 0;
+
+  function addItem(label, amount, color) {
+    items.push({ label: label, amount: amount, color: color });
+  }
+
+  if (type === 'new') {
+    tileQtyLte = parseInt($('n-qty-lte').value) || 0;
+    tileQtyGt = parseInt($('n-qty-gt').value) || 0;
+    tileTotalCount = tileQtyLte + tileQtyGt;
+    var tierKey = getTierKey(tileTotalCount);
+    tileRateLte = newRatesLTE[tierKey];
+    tileRateGt = newRatesGT[tierKey];
+    withRechargePDF = $('n-recharge').checked;
+    var rechTot = withRechargePDF ? (tileQtyLte * AVG_LTE_NEW) + (tileQtyGt * AVG_GT_NEW) : 0;
+    simMarginTotalPDF = newMarginOn ? tileTotalCount * SIM_MARGIN : 0;
+    grandTotal = (tileQtyLte * tileRateLte) + (tileQtyGt * tileRateGt) + rechTot + simMarginTotalPDF;
+    if (tileQtyLte > 0) addItem('Plans <=6.99 Bonus (' + tileQtyLte + ' x \u20ac' + tileRateLte + ')', tileQtyLte * tileRateLte, GREEN);
+    if (tileQtyGt > 0) addItem('Plans >6.99 Bonus (' + tileQtyGt + ' x \u20ac' + tileRateGt + ')', tileQtyGt * tileRateGt, BLUE);
+    if (withRechargePDF) addItem('Auto Recharge Cashback', rechTot, GOLD);
+    addItem('SIM Margin (\u20ac5/SIM)' + (newMarginOn ? ' (' + tileTotalCount + ' x \u20ac' + SIM_MARGIN + ')' : ' - Without'), simMarginTotalPDF, '#CCCCCC');
+  } else {
+    tileQtyLte = parseInt($('m-qty-lte').value) || 0;
+    tileQtyGt = parseInt($('m-qty-gt').value) || 0;
+    tileTotalCount = tileQtyLte + tileQtyGt;
+    var tierKey2 = getTierKey(tileTotalCount);
+    tileRateLte = mnpRatesLTE[tierKey2];
+    tileRateGt = mnpRatesGT[tierKey2];
+    withRechargePDF = $('m-recharge').checked;
+    var gPQ = parseInt($('m-gara-premium').value) || 0;
+    var gOQ = parseInt($('m-gara-other').value) || 0;
+    var gS = gPQ + gOQ;
+    var gElig = tileTotalCount >= 15;
+    var gPremTot = (gElig && gS === tileTotalCount) ? gPQ * 40 : 0;
+    var gOthTot  = (gElig && gS === tileTotalCount) ? gOQ * 20 : 0;
+    var rechTot2 = withRechargePDF ? (tileQtyLte * AVG_LTE_MNP) + (tileQtyGt * AVG_GT_MNP) : 0;
+    simMarginTotalPDF = mnpMarginOn ? tileTotalCount * SIM_MARGIN : 0;
+    grandTotal = (tileQtyLte * tileRateLte) + (tileQtyGt * tileRateGt) + gPremTot + gOthTot + rechTot2 + simMarginTotalPDF;
+    if (tileQtyLte > 0) addItem('MNP <=6.99 (' + tileQtyLte + ' x \u20ac' + tileRateLte + ')', tileQtyLte * tileRateLte, GREEN);
+    if (tileQtyGt > 0) addItem('MNP >6.99 (' + tileQtyGt + ' x \u20ac' + tileRateGt + ')', tileQtyGt * tileRateGt, BLUE);
+    if (gElig && gPQ > 0 && gS === tileTotalCount) addItem('GARA Premium (+\u20ac40) (' + gPQ + ' x \u20ac40)', gPremTot, GREEN);
+    if (gElig && gOQ > 0 && gS === tileTotalCount) addItem('GARA Other (+\u20ac20) (' + gOQ + ' x \u20ac20)', gOthTot, BLUE);
+    if (!gElig) addItem('GARA Extra Boost - min. 15 MNP not reached', 0, '#666666');
+    if (gElig && gS === 0) addItem('GARA Extra Boost - no GARA operators entered', 0, '#666666');
+    if (withRechargePDF) addItem('Auto Recharge Cashback', rechTot2, GOLD);
+    addItem('SIM Margin (\u20ac5/SIM)' + (mnpMarginOn ? ' (' + tileTotalCount + ' x \u20ac' + SIM_MARGIN + ')' : ' - Without'), simMarginTotalPDF, '#CCCCCC');
+  }
+
+  // ===== PAGE 1: ACTIVATION DETAILS TILES + EARNINGS BREAKDOWN =====
+
+  // Section label: Activation Details — full width
+  doc.setFillColor(NAVY);
+  doc.roundedRect(margin, yPos, contentW, 9, 2, 2, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(GREEN);
+  doc.text(pdfStrings.pdf_activation_details || 'ACTIVATION DETAILS', margin + 6, yPos + 6.5);
+  doc.setFont(pdfFont, 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor('#AAAAAA');
+  var actType = type === 'new' ? (pdfStrings.pdf_new || 'New Activations') : (pdfStrings.pdf_mnp || 'MNP Port-In');
+  doc.text(actType, margin + contentW - 6, yPos + 6.5, { align: 'right' });
+  yPos += 10;
+
+  // Draw 4 tiles in a row: LTE qty/rate | GT qty/rate | Total Activations | Tier
+  var tileGapX = 3;
+  var tileCount = 4;
+  var tileW4 = (contentW - tileGapX * (tileCount - 1)) / tileCount;
+  var tileH4 = 30;
+
+  // Tile helper
+  function drawDetailTile(x, y, w, h, bgFill, titleText, titleColor, lines) {
+    doc.setFillColor(bgFill);
+    doc.roundedRect(x, y, w, h, 3, 3, 'F');
+    doc.setFont(pdfBoldFont, 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(titleColor);
+    doc.text(titleText, x + w / 2, y + 7, { align: 'center' });
+    for (var li = 0; li < lines.length; li++) {
+      var lineObj = lines[li];
+      doc.setFont(lineObj.bold ? pdfBoldFont : pdfFont, lineObj.bold ? 'bold' : 'normal');
+      doc.setFontSize(lineObj.size || 8);
+      doc.setTextColor(lineObj.color || '#333333');
+      doc.text(lineObj.text, x + w / 2, y + 14 + li * 9, { align: 'center' });
+    }
+  }
+
+  var tierLblAct = getTierLabel(tileTotalCount);
+
+  // Tile 1: LTE plans — Qty + Rate only (no amount)
+  drawDetailTile(margin, yPos, tileW4, tileH4, '#E8FFF4', 'PLANS <=\u20ac6.99', '#0b3a2a', [
+    { text: 'Qty: ' + tileQtyLte, size: 12, color: '#0b5c38', bold: true },
+    { text: 'Rate: \u20ac' + tileRateLte, size: 11, color: '#1f6b45', bold: true }
+  ]);
+
+  // Tile 2: GT plans — Qty + Rate only (no amount)
+  var t2x = margin + tileW4 + tileGapX;
+  drawDetailTile(t2x, yPos, tileW4, tileH4, '#EBF1FF', 'PLANS >\u20ac6.99', '#1a3a8c', [
+    { text: 'Qty: ' + tileQtyGt, size: 12, color: '#1a3a8c', bold: true },
+    { text: 'Rate: \u20ac' + tileRateGt, size: 11, color: '#2a4ab0', bold: true }
+  ]);
+
+  // Tile 3: Total count
+  var t3x = t2x + tileW4 + tileGapX;
+  drawDetailTile(t3x, yPos, tileW4, tileH4, NAVY, type === 'new' ? (pdfStrings.pdf_total_activations || 'TOTAL ACTIVATIONS') : (pdfStrings.pdf_total_portins || 'TOTAL PORT-INS'), WHITE, [
+    { text: String(tileTotalCount), size: 20, color: GREEN, bold: true, align: 'center' }
+  ]);
+
+  // Tile 4: Tier
+  var t4x = t3x + tileW4 + tileGapX;
+  drawDetailTile(t4x, yPos, tileW4, tileH4, '#1a1e4a', pdfStrings.pdf_tier || 'TIER', '#AAAAAA', [
+    { text: tierLblAct, size: 20, color: GOLD, bold: true }
+  ]);
+
+  yPos += tileH4 + 6;
+
+  // ===== EARNINGS BREAKDOWN SECTION =====
+  doc.setFillColor(GREEN);
+  doc.rect(margin, yPos, 4, 10, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(NAVY);
+  doc.text(pdfStrings.pdf_breakdown || 'EARNINGS BREAKDOWN', margin + 10, yPos + 8);
+  yPos += 12;
+
+  // Draw table header
+  doc.setFillColor(NAVY);
+  doc.rect(margin, yPos, contentW, 8, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(WHITE);
+  doc.text(pdfStrings.pdf_item || 'Item', margin + 6, yPos + 5.5);
+  doc.text(pdfStrings.pdf_amount || 'Amount', margin + contentW - 6, yPos + 5.5, { align: 'right' });
+  yPos += 10;
+
+  // Draw items
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    // Alternating row backgrounds
+    if (i % 2 === 0) {
+      doc.setFillColor('#F5F5F5');
+      doc.rect(margin, yPos - 3, contentW, lineH + 2, 'F');
+    }
+
+    doc.setFont(pdfFont, 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor('#333333');
+    doc.text(item.label, margin + 4, yPos + 2);
+
+    doc.setFont(pdfBoldFont, 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(item.color);
+    var amtStr = '€' + (item.amount % 1 === 0 ? item.amount.toFixed(0) : item.amount.toFixed(2));
+    doc.text(amtStr, margin + contentW - 4, yPos + 2, { align: 'right' });
+    yPos += lineH + 2;
+
+    // Check if we need a new page
+    if (yPos > pageH - 45) {
+      pageNum++;
+      doc.addPage();
+      addHeader();
+      addFooter(pageNum);
+      yPos = 58;
+    }
+  }
+
+  // Total separator line
+  yPos += 2;
+  doc.setDrawColor(GREEN);
+  doc.setLineWidth(1.5);
+  doc.line(margin, yPos, margin + contentW, yPos);
+  yPos += 2;
+
+  // Grand total
+  doc.setFillColor(NAVY);
+  doc.rect(margin, yPos, contentW, 14, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(WHITE);
+  doc.text(pdfStrings.pdf_grand_total || 'GRAND TOTAL', margin + 4, yPos + 10);
+  doc.setFontSize(16);
+  doc.setTextColor(GREEN);
+  var grandStr = '€' + (grandTotal % 1 === 0 ? grandTotal.toFixed(0) : grandTotal.toFixed(2));
+  doc.text(grandStr, margin + contentW - 4, yPos + 10, { align: 'right' });
+  yPos += 12;
+
+  // ===== SUMMARY BAR (slim, below grand total) =====
+  doc.setFillColor('#F0F8F0');
+  doc.rect(margin, yPos, contentW, 6, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(NAVY);
+  var summaryTxt = type === 'new'
+    ? (pdfStrings.pdf_summary_new || '<=\u20ac6.99: {lte}  |  >\u20ac6.99: {gt}  |  Total: {tot}  |  Tier: {tier}')
+        .replace('{lte}', tileQtyLte).replace('{gt}', tileQtyGt).replace('{tot}', tileTotalCount).replace('{tier}', getTierLabel(tileTotalCount))
+    : (pdfStrings.pdf_summary_mnp || 'MNP <=\u20ac6.99: {lte}  |  MNP >\u20ac6.99: {gt}  |  Total: {tot}  |  Tier: {tier}')
+        .replace('{lte}', tileQtyLte).replace('{gt}', tileQtyGt).replace('{tot}', tileTotalCount).replace('{tier}', getTierLabel(tileTotalCount));
+  doc.text(summaryTxt, margin + 4, yPos + 4.5);
+  yPos += 10;
+
+  // ===== PAGE 1: MNP MANDATORY CONDITIONS (always shown) =====
+  // Tax Code + IMEI
+  doc.setFillColor('#F0F8FF');
+  doc.rect(margin, yPos, contentW, 14, 'F');
+  doc.setFillColor(BLUE);
+  doc.rect(margin, yPos, 3, 14, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(8); doc.setTextColor('#245BC1');
+  doc.text('Tax Code + IMEI', margin + 8, yPos + 5.5);
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(6.5); doc.setTextColor('#444444');
+  var taxText = doc.splitTextToSize('Only unique customers (unique Tax Code) and IMEI are eligible for the GARA incentive & MNP incentive.', contentW - 14);
+  doc.text(taxText, margin + 8, yPos + 11);
+  yPos += 17;
+
+  // RENEWAL + USAGE
+  doc.setFillColor('#FFF5F5');
+  doc.rect(margin, yPos, contentW, 14, 'F');
+  doc.setFillColor('#DC2626');
+  doc.rect(margin, yPos, 3, 14, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(8); doc.setTextColor('#DC2626');
+  doc.text('RENEWAL + USAGE', margin + 8, yPos + 5.5);
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(6.5); doc.setTextColor('#444444');
+  var renewText = doc.splitTextToSize('Continuous usage and renewal required for minimum 6 months or else Malus up to 50% applicable & full clawback for fraud.', contentW - 14);
+  doc.text(renewText, margin + 8, yPos + 11);
+  yPos += 18;
+
+  // Disclaimer
+  var discTextP1 = 'This document is for informational purposes only. Actual incentives may vary based on verification and compliance with all terms and conditions.';
+  doc.setFillColor('#F8FFF8');
+  doc.rect(margin, yPos, contentW, 16, 'F');
+  doc.setDrawColor(GREEN);
+  doc.setLineWidth(0.5);
+  doc.rect(margin, yPos, contentW, 16, 'S');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(7); doc.setTextColor(GREEN);
+  doc.text('DISCLAIMER', margin + 6, yPos + 5);
+  doc.setFont(pdfFont, 'italic'); doc.setFontSize(6); doc.setTextColor('#555555');
+  var discLinesP1 = doc.splitTextToSize(discTextP1, contentW - 14);
+  doc.text(discLinesP1, margin + 6, yPos + 11);
+  yPos += 20;
+
+  // ===== PAGE 2: Activation Compensation + GARA Extra Boost + Terms & Conditions =====
+  pageNum++;
+  doc.addPage();
+  addHeader();
+  addFooter(pageNum);
+  yPos = 50;
+
+  // ---- SECTION A: ACTIVATION COMPENSATION SCHEME TABLES ----
+  doc.setFillColor(GREEN);
+  doc.roundedRect(margin, yPos, contentW, 10, 2, 2, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(10); doc.setTextColor(NAVY);
+  doc.text('ACTIVATION COMPENSATION SCHEME', margin + 6, yPos + 7.5);
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(7); doc.setTextColor('#0b3a2a');
+  doc.text('Rate per SIM based on monthly volume tier', margin + contentW - 6, yPos + 7.5, { align: 'right' });
+  yPos += 13;
+
+  // Two rate tables side by side: LTE (<=6.99) and GT (>6.99)
+  var schGap = 6;
+  var schW = (contentW - schGap) / 2;
+  var schRowH = 10;
+
+  function drawSchemeTable(x, yy, w, headerBg, headerLabel, maxBadge, rows) {
+    // Table header
+    doc.setFillColor(headerBg);
+    doc.roundedRect(x, yy, w, 14, 3, 3, 'F');
+    doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(9); doc.setTextColor(WHITE);
+    doc.text(headerLabel, x + 6, yy + 9.5);
+    doc.setFontSize(11); doc.setTextColor(GOLD);
+    doc.text(maxBadge, x + w - 6, yy + 9.5, { align: 'right' });
+    yy += 16;
+
+    // Column headers
+    var cols = ['TYPE', 'FROM 1', 'FROM 6', 'FROM 15', 'FROM 35'];
+    var colW = w / cols.length;
+    doc.setFillColor(NAVY);
+    doc.rect(x, yy, w, 8, 'F');
+    doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(6.5); doc.setTextColor('#AAAAAA');
+    for (var ci = 0; ci < cols.length; ci++) {
+      var cx = x + ci * colW + (ci === 0 ? 4 : colW / 2);
+      var align = ci === 0 ? 'left' : 'center';
+      doc.text(cols[ci], ci === 0 ? cx : x + ci * colW + colW / 2, yy + 5.5, { align: align });
+    }
+    yy += 10;
+
+    // Data rows
+    var rowBgs = ['#E8FFF4', '#EBF1FF'];
+    var rowTextColors = ['#065f46', '#1e3a8a'];
+    for (var ri = 0; ri < rows.length; ri++) {
+      var row = rows[ri];
+      doc.setFillColor(rowBgs[ri % 2]);
+      doc.rect(x, yy, w, schRowH, 'F');
+      // Type label
+      doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(7); doc.setTextColor(rowTextColors[ri % 2]);
+      doc.text(row[0], x + 4, yy + 7);
+      // Rate values
+      for (var vi = 1; vi < row.length; vi++) {
+        doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(9);
+        doc.setTextColor(ri === 0 ? '#065f46' : '#1e3a8a');
+        doc.text(row[vi], x + vi * colW + colW / 2, yy + 7, { align: 'center' });
+      }
+      yy += schRowH;
+    }
+    // bottom note
+    doc.setFont(pdfFont, 'normal'); doc.setFontSize(6); doc.setTextColor('#888888');
+    doc.text('+ \u20ac5 SIM margin per activation', x + 4, yy + 4);
+    return yy + 8;
+  }
+
+  // LTE table (<=6.99): MNP: 8/17/20/23 | New: 3/5/6/7
+  var schYafter = drawSchemeTable(margin, yPos, schW, '#08a35e',
+    'PLANS <= \u20ac6.99', 'MAX \u20ac23 MNP',
+    [['MNP', '\u20ac8', '\u20ac17', '\u20ac20', '\u20ac23'],
+     ['New Act.', '\u20ac3', '\u20ac5', '\u20ac6', '\u20ac7']]);
+
+  // GT table (>6.99): MNP: 12/27/31/38 | New: 5/6/7/9
+  drawSchemeTable(margin + schW + schGap, yPos, schW, BLUE,
+    'PLANS > \u20ac6.99', 'MAX \u20ac38 MNP',
+    [['MNP', '\u20ac12', '\u20ac27', '\u20ac31', '\u20ac38'],
+     ['New Act.', '\u20ac5', '\u20ac6', '\u20ac7', '\u20ac9']]);
+
+  yPos = schYafter + 2;
+
+  // ---- SECTION B: GARA EXTRA BOOST SCHEME ----
+  doc.setFillColor(GOLD);
+  doc.roundedRect(margin, yPos, contentW, 10, 2, 2, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(10); doc.setTextColor(NAVY);
+  doc.text('GARA EXTRA BOOST', margin + 6, yPos + 7.5);
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(7); doc.setTextColor('#5a4000');
+  doc.text('MNP PORT-IN ONLY  |  Minimum 15 MNPs per month', margin + contentW - 6, yPos + 7.5, { align: 'right' });
+  yPos += 12;
+
+  // 2 GARA scheme boxes + 1 conditions box in a row
+  var gbGap = 5;
+  var gbW2 = (contentW * 0.27);
+  var gbCondW = contentW - gbW2 * 2 - gbGap * 2;
+  var gbH = 28;
+
+  // GARA Premium box
+  doc.setFillColor('#D1FAE5');
+  doc.roundedRect(margin, yPos, gbW2, gbH, 3, 3, 'F');
+  doc.setFillColor('#065f46');
+  doc.roundedRect(margin, yPos, gbW2, 9, 3, 3, 'F');
+  doc.rect(margin, yPos + 6, gbW2, 3, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(7.5); doc.setTextColor(WHITE);
+  doc.text('GARA PREMIUM', margin + gbW2 / 2, yPos + 7, { align: 'center' });
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(13); doc.setTextColor('#065f46');
+  doc.text('+\u20ac40', margin + gbW2 / 2, yPos + 17, { align: 'center' });
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(5.5); doc.setTextColor('#047857');
+  doc.text('per MNP', margin + gbW2 / 2, yPos + 22, { align: 'center' });
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(5); doc.setTextColor('#047857');
+  var premOpsText = doc.splitTextToSize('Iliad \u00b7 Fastweb \u00b7 CoopVoce \u00b7 PosteMobile', gbW2 - 4);
+  doc.text(premOpsText, margin + gbW2 / 2, yPos + 24, { align: 'center' });
+
+  // GARA Other box
+  var gbX2 = margin + gbW2 + gbGap;
+  doc.setFillColor('#DBEAFE');
+  doc.roundedRect(gbX2, yPos, gbW2, gbH, 3, 3, 'F');
+  doc.setFillColor('#1e40af');
+  doc.roundedRect(gbX2, yPos, gbW2, 9, 3, 3, 'F');
+  doc.rect(gbX2, yPos + 6, gbW2, 3, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(7.5); doc.setTextColor(WHITE);
+  doc.text('GARA OTHER', gbX2 + gbW2 / 2, yPos + 7, { align: 'center' });
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(13); doc.setTextColor('#1e40af');
+  doc.text('+\u20ac20', gbX2 + gbW2 / 2, yPos + 17, { align: 'center' });
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(5.5); doc.setTextColor('#1d4ed8');
+  doc.text('per MNP', gbX2 + gbW2 / 2, yPos + 22, { align: 'center' });
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(5); doc.setTextColor('#1d4ed8');
+  var otherOpsText = doc.splitTextToSize('All other MNO & MVNO operators', gbX2 + gbW2 - gbX2 - 4);
+  doc.text(otherOpsText, gbX2 + gbW2 / 2, yPos + 24, { align: 'center' });
+
+  // GARA Conditions box — left-aligned text
+  var gbX3 = gbX2 + gbW2 + gbGap;
+  doc.setFillColor(NAVY);
+  doc.roundedRect(gbX3, yPos, gbCondW, gbH, 3, 3, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(7); doc.setTextColor(GOLD);
+  doc.text('CONDITIONS', gbX3 + 5, yPos + 6.5);
+  var garaCondLines = [
+    'Valid port-in offer + completed FCA same month.',
+    'Iliad · Fastweb · CoopVoce · PosteMobile = Premium.',
+    'Unique Tax Code + IMEI only.',
+    'Credited after 60 days.'
+  ];
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(6.2); doc.setTextColor('#CCCCCC');
+  for (var gci = 0; gci < garaCondLines.length; gci++) {
+    doc.text(garaCondLines[gci], gbX3 + 5, yPos + 12 + gci * 4.5);
+  }
+
+  yPos += gbH + 5;
+
+  // Auto Recharge strip
+  doc.setFillColor('#1a2060');
+  doc.roundedRect(margin, yPos, contentW, 11, 2, 2, 'F');
+  doc.setFillColor(BLUE);
+  doc.roundedRect(margin, yPos, 3, 11, 1, 1, 'F');
+  doc.setFont(pdfBoldFont, 'bold'); doc.setFontSize(7); doc.setTextColor('#6ea4ff');
+  doc.text('AUTO RECHARGE CASHBACK:', margin + 8, yPos + 5);
+  doc.setFont(pdfFont, 'normal'); doc.setFontSize(6); doc.setTextColor('#CCCCCC');
+  doc.text('Activate via CPOS with Credit/Debit Card + QR Code scan. Earn the full plan value as cashback. POS only — not valid for APP/ONLINE. First plan per MSISDN.', margin + 8, yPos + 9.5);
+  yPos += 13;
+
+  // ---- SECTION C: TERMS & CONDITIONS ----
+  doc.setFillColor(NAVY);
+  doc.roundedRect(margin, yPos, contentW, 8, 2, 2, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(WHITE);
+  doc.text('TERMS & CONDITIONS', margin + 6, yPos + 6);
+  doc.setFont(pdfFont, 'normal');
+  doc.setFontSize(6.5);
+  doc.setTextColor('#AAAAAA');
+  doc.text('Programme Rules · Normal Incentive Scheme', margin + contentW - 6, yPos + 6, { align: 'right' });
+  yPos += 12;
+
+  // Terms in 2-column layout
+  var termsData = [
+    { color: GREEN,    num: '1', text: 'Minimum 1 SIM with FCA each month. Calculation period: 1st to last day of the month.' },
+    { color: BLUE,     num: '2', text: 'Min plan port-in: \u20ac5.99 | New activations: \u20ac6.99. MNP and new activations counted separately.' },
+    { color: GREEN,    num: '3', text: 'SIM must complete FCA. Activations must be correct and compliant with all programme rules.' },
+    { color: GOLD,     num: '4', text: 'Port-in incentives credited after 60 days, subject to administrative verification and usage.' },
+    { color: '#DC2626',num: '5', text: '>=10 activations with >5% without use: deduction. >5% port-out within 30 days: deduction. \u20ac10 penalty per abuse + incentive recovery.' },
+    { color: BLUE,     num: '6', text: '+\u20ac5 for NON-HP SIM via POS (max \u20ac100). POS inactive 90 days: balance suspended.' },
+    { color: '#DC2626',num: '7', text: 'Port-out deductions: without FCA/plan/use; within 7 days (except >\u20ac9.99); port-in + port-out within 60 days = false activation.' },
+    { color: GOLD,     num: '8', text: 'Malus up to 50% if renewal rate <65%. Verification checks may apply on activation regularity.' }
+  ];
+
+  var termColW = (contentW - 8) / 2;
+  var termH = 10;
+  var termGapY = 1;
+  for (var ti = 0; ti < termsData.length; ti++) {
+    var td = termsData[ti];
+    var tcol = ti % 2;
+    var trow = Math.floor(ti / 2);
+    var tx = margin + tcol * (termColW + 8);
+    var ty = yPos + trow * (termH + termGapY);
+
+    doc.setFillColor('#F8F9FF');
+    doc.roundedRect(tx, ty, termColW, termH, 2, 2, 'F');
+    doc.setFillColor(td.color);
+    doc.roundedRect(tx, ty, 3, termH, 1, 1, 'F');
+    doc.setFillColor(td.color);
+    doc.circle(tx + 9, ty + 5, 3, 'F');
+    doc.setFont(pdfBoldFont, 'bold');
+    doc.setFontSize(6.5);
+    doc.setTextColor(WHITE);
+    doc.text(td.num, tx + 9, ty + 6.5, { align: 'center' });
+    doc.setFont(pdfFont, 'normal');
+    doc.setFontSize(5.5);
+    doc.setTextColor('#333333');
+    var wrappedTerm = doc.splitTextToSize(td.text, termColW - 20);
+    if (wrappedTerm.length > 2) wrappedTerm = wrappedTerm.slice(0, 2);
+    doc.text(wrappedTerm, tx + 16, ty + 4);
+  }
+
+  yPos += (Math.ceil(termsData.length / 2)) * (termH + termGapY) + 2;
+
+  // ---- MALUS / CLAWBACK warning strip ----
+  doc.setFillColor('#FFF5F5');
+  doc.roundedRect(margin, yPos, contentW, 9, 2, 2, 'F');
+  doc.setFillColor('#DC2626');
+  doc.roundedRect(margin, yPos, 3, 9, 1, 1, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor('#DC2626');
+  doc.text('MALUS & CLAWBACK:', margin + 8, yPos + 4);
+  doc.setFont(pdfFont, 'normal');
+  doc.setFontSize(5.5);
+  doc.setTextColor('#444444');
+  doc.text('Continuous usage and renewal required for minimum 6 months. Malus up to 50% applies for low renewal rates. Full clawback for fraud or non-compliance.', margin + 8, yPos + 7.5);
+  yPos += 11;
+
+  // Disclaimer box (page 2 footer)
+  var discText = pdfStrings.pdf_disclaimer || 'This document is for informational purposes only. Actual incentives may vary based on verification and compliance with all terms and conditions.';
+  doc.setFillColor('#F8FFF8');
+  doc.roundedRect(margin, yPos, contentW, 12, 2, 2, 'F');
+  doc.setFillColor(GREEN);
+  doc.roundedRect(margin, yPos, 3, 12, 1, 1, 'F');
+  doc.setFont(pdfBoldFont, 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(GREEN);
+  doc.text('DISCLAIMER', margin + 8, yPos + 4.5);
+  doc.setFont(pdfFont, 'italic');
+  doc.setFontSize(5.5);
+  doc.setTextColor('#555555');
+  var discLines = doc.splitTextToSize(discText, contentW - 14);
+  if (discLines.length > 2) discLines = discLines.slice(0, 2);
+  doc.text(discLines, margin + 8, yPos + 9);
+
+  // Save
+  var filenameTypeLabel = (type === 'new') ? (pdfStrings.pdf_new || 'NewActivations') : (pdfStrings.pdf_mnp || 'MNP');
+  // Keep filename ASCII-safe
+  filenameTypeLabel = String(filenameTypeLabel).replace(/[^a-z0-9]+/gi, '_');
+  filenameTypeLabel = filenameTypeLabel.replace(/^_+|_+$/g, '');
+
+  var filename = 'Lycamobile_Incentive_Calculation_' + filenameTypeLabel + '_' + new Date().toISOString().slice(0, 10) + '.pdf';
+  doc.save(filename);
 }
 
 // ============ EVENT LISTENERS ============
@@ -1408,6 +2075,13 @@ $('ptab-mnp').addEventListener('click',function(){switchPlansTab('mnp');});
 $('ptab-new').addEventListener('click',function(){switchPlansTab('new');});
 $('btn-calc-new').addEventListener('click',calcNew);
 $('btn-calc-mnp').addEventListener('click',calcMnp);
+$('pdf-new-btn').addEventListener('click',function(){
+  // Font loading is started on setLang, so PDF always downloads immediately
+  generatePDF('new');
+});
+$('pdf-mnp-btn').addEventListener('click',function(){
+  generatePDF('mnp');
+});
 
 $('n-qty-lte').addEventListener('input',updateNewTier);
 $('n-qty-gt').addEventListener('input',updateNewTier);
